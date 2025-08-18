@@ -1,0 +1,296 @@
+<div class="products-container">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Products Studio</h1>
+      <p class="hero-subtitle">
+        The full-stack SSR/CSR workspace. Build, test, and deploy your products with mixed rendering strategies.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary">Get Started</button>
+        <button class="btn-secondary">View Demo</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="gradient-orb"></div>
+    </div>
+  </div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-item">
+      <span class="status-label">Rendered on:</span>
+      <span class="status-value" [class.server]="isServer()" [class.client]="!isServer()">
+        {{ isServer() ? 'Server' : 'Client' }}
+      </span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Last Updated:</span>
+      <span class="status-value">{{ renderTime() }}</span>
+    </div>
+    @if (!isServer()) {
+      <div class="status-item">
+        <span class="status-label">Real-time:</span>
+        <span class="status-value active">{{ realTimeStatus() }}</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Updates:</span>
+        <span class="status-value">{{ updateCount() }}</span>
+      </div>
+    }
+  </div>
+
+  <!-- Workspace Section -->
+  <div class="workspace-section">
+    <div class="workspace-header">
+      <h2>Mixed SSR/CSR Workspace</h2>
+      <p>Build with confidence using the perfect blend of server-side and client-side rendering</p>
+    </div>
+
+    <!-- Controls Panel -->
+    <div class="controls-panel">
+      <div class="panel-section">
+        <h3>Category Filter</h3>
+        <div class="filter-grid">
+          @for (category of categories(); track category.id) {
+            <button 
+              class="filter-chip" 
+              [class.active]="selectedCategory() === category.id"
+              (click)="filterByCategory(category.id)"
+            >
+              {{ category.name }}
+            </button>
+          }
+        </div>
+      </div>
+
+      @if (!isServer()) {
+        <div class="panel-section">
+          <h3>Dynamic Controls</h3>
+          <div class="control-grid">
+            <div class="control-group">
+              <label>View Mode</label>
+              <div class="toggle-group">
+                <button 
+                  class="toggle-btn" 
+                  [class.active]="viewMode() === 'grid'"
+                  (click)="setViewMode('grid')"
+                >
+                  Grid
+                </button>
+                <button 
+                  class="toggle-btn" 
+                  [class.active]="viewMode() === 'list'"
+                  (click)="setViewMode('list')"
+                >
+                  List
+                </button>
+              </div>
+            </div>
+            
+            <div class="control-group">
+              <label>Sort By</label>
+              <select class="select-control" (change)="setSortBy($any($event.target).value)" [value]="sortBy()">
+                <option value="name">Name</option>
+                <option value="price">Price</option>
+                <option value="rating">Rating</option>
+              </select>
+            </div>
+            
+            <div class="control-group">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  [checked]="showOnlyInStock()" 
+                  (change)="toggleStockFilter()"
+                >
+                <span class="checkmark"></span>
+                Show Only In Stock
+              </label>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Products Workspace -->
+    <div class="products-workspace">
+      @if (loading()) {
+        <div class="loading-workspace">
+          <div class="loading-spinner"></div>
+          <p>Loading products workspace...</p>
+        </div>
+      }
+
+      @if (!loading()) {
+        <div class="products-grid" [class.list-view]="viewMode() === 'list'">
+          @for (product of filteredAndSortedProducts; track product.id) {
+            <div class="product-card">
+              <div class="card-header">
+                <div class="product-icon">{{ product.image }}</div>
+                <div class="product-meta">
+                  <h3>{{ product.name }}</h3>
+                  <span class="category-tag">{{ product.category }}</span>
+                </div>
+              </div>
+              
+              <div class="card-body">
+                <p class="product-description">{{ product.description }}</p>
+                
+                @if (!isServer() && getLiveData(product.id)) {
+                  <div class="live-data-section">
+                    <div class="price-row">
+                      @if (product.originalPrice && product.originalPrice > product.price) {
+                        <span class="original-price">{{ formatPrice(product.originalPrice) }}</span>
+                      }
+                      <span class="current-price">{{ formatPrice(getLiveData(product.id)!.currentPrice) }}</span>
+                      @if (product.originalPrice && product.originalPrice > product.price) {
+                        <span class="discount-tag">-{{ getDiscountPercentage(product.originalPrice, getLiveData(product.id)!.currentPrice) }}%</span>
+                      }
+                    </div>
+                    
+                    <div class="metrics-grid">
+                      <div class="metric">
+                        <span class="metric-label">Stock</span>
+                        <span class="metric-value" [style.color]="getStockStatus(getLiveData(product.id)!.stockCount).color">
+                          {{ getLiveData(product.id)!.stockCount }}
+                        </span>
+                      </div>
+                      <div class="metric">
+                        <span class="metric-label">Rating</span>
+                        <span class="metric-value">⭐ {{ getLiveData(product.id)!.rating.toFixed(1) }}</span>
+                      </div>
+                      <div class="metric">
+                        <span class="metric-label">Reviews</span>
+                        <span class="metric-value">{{ getLiveData(product.id)!.reviewCount }}</span>
+                      </div>
+                    </div>
+                  </div>
+                } @else {
+                  <div class="static-data-section">
+                    <div class="price-row">
+                      <span class="current-price">{{ formatPrice(product.price) }}</span>
+                      @if (product.originalPrice && product.originalPrice > product.price) {
+                        <span class="discount-tag">-{{ product.discount }}%</span>
+                      }
+                    </div>
+                    <div class="stock-status" [class.in-stock]="product.inStock" [class.out-of-stock]="!product.inStock">
+                      {{ product.inStock ? 'In Stock' : 'Out of Stock' }}
+                    </div>
+                  </div>
+                }
+              </div>
+              
+              @if (!isServer()) {
+                <div class="card-actions">
+                  <button class="action-btn primary" (click)="addToCart(product.id)">
+                    Add to Cart
+                  </button>
+                  <button class="action-btn secondary" (click)="addToWishlist(product.id)">
+                    Wishlist
+                  </button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        @if (filteredAndSortedProducts.length === 0) {
+          <div class="empty-state">
+            <div class="empty-icon">📦</div>
+            <h3>No products found</h3>
+            <p>Try adjusting your filters or search criteria</p>
+          </div>
+        }
+      }
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="features-section">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <h3>SSR Benefits</h3>
+        <ul>
+          <li>SEO-friendly content</li>
+          <li>Fast initial load</li>
+          <li>Better Core Web Vitals</li>
+          <li>Social media ready</li>
+        </ul>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>CSR Benefits</h3>
+        <ul>
+          <li>Real-time updates</li>
+          <li>Interactive features</li>
+          <li>Dynamic UI</li>
+          <li>User engagement</li>
+        </ul>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Best of Both</h3>
+        <ul>
+          <li>Progressive enhancement</li>
+          <li>Optimal performance</li>
+          <li>Better UX</li>
+          <li>Future-proof</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-time Demo -->
+  @if (!isServer()) {
+    <div class="realtime-section">
+      <div class="section-header">
+        <h2>Real-time Data Studio</h2>
+        <p>Live updates every 3 seconds demonstrating client-side capabilities</p>
+      </div>
+      
+      <div class="realtime-grid">
+        @for (product of products().slice(0, 3); track product.id) {
+          @if (getLiveData(product.id)) {
+            <div class="realtime-card">
+              <div class="card-header">
+                <h4>{{ product.name }}</h4>
+                <div class="live-indicator"></div>
+              </div>
+              <div class="metrics-list">
+                <div class="metric-item">
+                  <span class="label">Price</span>
+                  <span class="value">{{ formatPrice(getLiveData(product.id)!.currentPrice) }}</span>
+                </div>
+                <div class="metric-item">
+                  <span class="label">Stock</span>
+                  <span class="value">{{ getLiveData(product.id)!.stockCount }}</span>
+                </div>
+                <div class="metric-item">
+                  <span class="label">Rating</span>
+                  <span class="value">⭐ {{ getLiveData(product.id)!.rating.toFixed(1) }}</span>
+                </div>
+                <div class="metric-item">
+                  <span class="label">Reviews</span>
+                  <span class="value">{{ getLiveData(product.id)!.reviewCount }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+
+  <!-- CTA Section -->
+  <div class="cta-section">
+    <div class="cta-content">
+      <h2>Ready to build with mixed SSR/CSR?</h2>
+      <p>Join thousands of developers building modern web applications with the perfect blend of server-side and client-side rendering.</p>
+      <button class="btn-primary">Try Products Studio</button>
+    </div>
+  </div>
+</div>

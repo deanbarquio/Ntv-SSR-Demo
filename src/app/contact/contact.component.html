@@ -1,0 +1,513 @@
+<div class="contact-container">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Contact Form Demo</h1>
+      <p class="hero-subtitle">
+        Both SSR and CSR forms can submit data! The difference is in <strong>when</strong> and <strong>how</strong> the processing happens.
+      </p>
+    </div>
+  </div>
+
+  <!-- SSR vs CSR Demo Section -->
+  <div class="demo-section">
+    <div class="section-header">
+      <h2>SSR vs CSR Form Handling</h2>
+      <p>Both approaches can handle form submissions - they just do it differently</p>
+    </div>
+    
+    <div class="demo-grid">
+      <!-- SSR Form Demo -->
+      <div class="form-demo">
+        <div class="demo-header">
+          <h3>Server-Side Rendering</h3>
+          <div class="render-indicator server">
+            <span class="indicator-dot"></span>
+            Server Rendered
+          </div>
+        </div>
+        
+        <div class="form-info">
+          <p><strong>How SSR Forms Work:</strong></p>
+          <ul>
+            <li>Form is pre-rendered on server</li>
+            <li>User can input data normally</li>
+            <li>Data is sent to server on submission</li>
+            <li>Server processes the data</li>
+            <li>Page refreshes with result</li>
+          </ul>
+        </div>
+        
+        <div class="form-section">
+          <div class="form-header">
+            <h4>SSR Contact Form</h4>
+            <p>This form submits data to the server for processing</p>
+          </div>
+          
+          <form class="contact-form" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="ssr-name">Full Name</label>
+              <input 
+                type="text" 
+                id="ssr-name" 
+                name="name" 
+                [ngModel]="formData().name"
+                (ngModelChange)="updateName($event)"
+                class="form-input" 
+                placeholder="Enter your full name"
+                required
+              >
+            </div>
+            
+            <div class="form-group">
+              <label for="ssr-email">Email Address</label>
+              <input 
+                type="email" 
+                id="ssr-email" 
+                name="email" 
+                [ngModel]="formData().email"
+                (ngModelChange)="updateEmail($event)"
+                class="form-input" 
+                placeholder="Enter your email address"
+                required
+              >
+            </div>
+            
+            <div class="form-group">
+              <label for="ssr-subject">Subject</label>
+              <select 
+                id="ssr-subject" 
+                name="subject" 
+                [ngModel]="formData().subject"
+                (ngModelChange)="updateSubject($event)"
+                class="form-select"
+                required
+              >
+                <option value="">Select a subject</option>
+                <option value="general">General Inquiry</option>
+                <option value="support">Technical Support</option>
+                <option value="feature">Feature Request</option>
+                <option value="partnership">Partnership</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="ssr-message">Message</label>
+              <textarea 
+                id="ssr-message" 
+                name="message" 
+                [ngModel]="formData().message"
+                (ngModelChange)="updateMessage($event)"
+                class="form-textarea" 
+                placeholder="Tell us more about your inquiry..."
+                rows="4"
+                required
+              ></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  [ngModel]="formData().newsletter"
+                  (ngModelChange)="updateNewsletter($event)"
+                  name="newsletter"
+                >
+                <span class="checkmark"></span>
+                Subscribe to our newsletter
+              </label>
+            </div>
+            
+            <button type="submit" class="btn-primary" [disabled]="isSubmitting()">
+              @if (isSubmitting()) {
+                <span class="loading-spinner"></span>
+                Sending to Server...
+              } @else {
+                Submit (SSR)
+              }
+            </button>
+          </form>
+        </div>
+      </div>
+      
+      <!-- CSR Form Demo -->
+      <div class="form-demo">
+        <div class="demo-header">
+          <h3>Client-Side Rendering</h3>
+          <div class="render-indicator client">
+            <span class="indicator-dot"></span>
+            Client Rendered
+          </div>
+        </div>
+        
+        <div class="form-info">
+          <p><strong>How CSR Forms Work:</strong></p>
+          <ul>
+            <li>Form rendered by JavaScript</li>
+            <li>Real-time validation as you type</li>
+            <li>Data processed on client first</li>
+            <li>AJAX submission to server</li>
+            <li>No page refresh needed</li>
+          </ul>
+        </div>
+        
+        <div class="form-section">
+          <div class="form-header">
+            <h4>CSR Contact Form</h4>
+            <p>This form validates on client, then submits to server</p>
+          </div>
+          
+          <form class="contact-form csr-form" (ngSubmit)="onCSRSubmit()">
+            <div class="form-group">
+              <label for="csr-name">Full Name</label>
+              <input 
+                type="text" 
+                id="csr-name" 
+                name="csr-name" 
+                [ngModel]="csrFormData().name"
+                (ngModelChange)="updateCSRName($event)"
+                class="form-input" 
+                placeholder="Enter your full name"
+                required
+                (blur)="validateField('name', csrFormData().name)"
+              >
+              @if (csrErrors().name) {
+                <span class="error-message">{{ csrErrors().name }}</span>
+              }
+            </div>
+            
+            <div class="form-group">
+              <label for="csr-email">Email Address</label>
+              <input 
+                type="email" 
+                id="csr-email" 
+                name="csr-email" 
+                [ngModel]="csrFormData().email"
+                (ngModelChange)="updateCSREmail($event)"
+                class="form-input" 
+                placeholder="Enter your email address"
+                required
+                (blur)="validateField('email', csrFormData().email)"
+              >
+              @if (csrErrors().email) {
+                <span class="error-message">{{ csrErrors().email }}</span>
+              }
+            </div>
+            
+            <div class="form-group">
+              <label for="csr-subject">Subject</label>
+              <select 
+                id="csr-subject" 
+                name="csr-subject" 
+                [ngModel]="csrFormData().subject"
+                (ngModelChange)="updateCSRSubject($event)"
+                class="form-select"
+                required
+                (change)="validateField('subject', csrFormData().subject)"
+              >
+                <option value="">Select a subject</option>
+                <option value="general">General Inquiry</option>
+                <option value="support">Technical Support</option>
+                <option value="feature">Feature Request</option>
+                <option value="partnership">Partnership</option>
+                <option value="other">Other</option>
+              </select>
+              @if (csrErrors().subject) {
+                <span class="error-message">{{ csrErrors().subject }}</span>
+              }
+            </div>
+            
+            <div class="form-group">
+              <label for="csr-message">Message</label>
+              <textarea 
+                id="csr-message" 
+                name="csr-message" 
+                [ngModel]="csrFormData().message"
+                (ngModelChange)="updateCSRMessage($event)"
+                class="form-textarea" 
+                placeholder="Tell us more about your inquiry..."
+                rows="4"
+                required
+                (blur)="validateField('message', csrFormData().message)"
+              ></textarea>
+              @if (csrErrors().message) {
+                <span class="error-message">{{ csrErrors().message }}</span>
+              }
+            </div>
+            
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  [ngModel]="csrFormData().newsletter"
+                  (ngModelChange)="updateCSRNewsletter($event)"
+                  name="csr-newsletter"
+                >
+                <span class="checkmark"></span>
+                Subscribe to our newsletter
+              </label>
+            </div>
+            
+            <button type="submit" class="btn-primary" [disabled]="isCSRSubmitting()">
+              @if (isCSRSubmitting()) {
+                <span class="loading-spinner"></span>
+                Processing on Client...
+              } @else {
+                Submit (CSR)
+              }
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Differences Section -->
+  <div class="differences-section">
+    <div class="section-header">
+      <h2>Key Differences in Form Processing</h2>
+      <p>Both approaches can handle form data - here's how they differ</p>
+    </div>
+    
+    <div class="differences-grid">
+      <div class="difference-card">
+        <h3>Data Input</h3>
+        <div class="difference-content">
+          <div class="difference-item">
+            <span class="difference-label">SSR:</span>
+            <span class="difference-value">✅ Users can input data normally</span>
+          </div>
+          <div class="difference-item">
+            <span class="difference-label">CSR:</span>
+            <span class="difference-value">✅ Users can input data normally</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="difference-card">
+        <h3>Validation</h3>
+        <div class="difference-content">
+          <div class="difference-item">
+            <span class="difference-label">SSR:</span>
+            <span class="difference-value">After form submission</span>
+          </div>
+          <div class="difference-item">
+            <span class="difference-label">CSR:</span>
+            <span class="difference-value">Real-time as user types</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="difference-card">
+        <h3>Data Processing</h3>
+        <div class="difference-content">
+          <div class="difference-item">
+            <span class="difference-label">SSR:</span>
+            <span class="difference-value">Server processes all data</span>
+          </div>
+          <div class="difference-item">
+            <span class="difference-label">CSR:</span>
+            <span class="difference-value">Client validates, then server</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="difference-card">
+        <h3>User Experience</h3>
+        <div class="difference-content">
+          <div class="difference-item">
+            <span class="difference-label">SSR:</span>
+            <span class="difference-value">Page refresh after submission</span>
+          </div>
+          <div class="difference-item">
+            <span class="difference-label">CSR:</span>
+            <span class="difference-value">No page refresh needed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Comparison Section -->
+  <div class="comparison-section">
+    <div class="section-header">
+      <h2>Form Handling Comparison</h2>
+      <p>Detailed comparison of SSR vs CSR form processing</p>
+    </div>
+    
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <h3>Server-Side Rendering</h3>
+        <div class="comparison-item">
+          <span class="item-label">Data Input:</span>
+          <span class="item-value">✅ Fully Supported</span>
+        </div>
+        <div class="comparison-item">
+          <span class="item-label">Form Submission:</span>
+          <span class="item-value">✅ Traditional POST</span>
+        </div>
+        <div class="comparison-item">
+          <span class="item-label">Validation:</span>
+          <span class="item-value">Server-side validation</span>
+        </div>
+        <div class="comparison-item">
+          <span class="item-label">User Feedback:</span>
+          <span class="item-value">Page refresh required</span>
+        </div>
+        <div class="comparison-item">
+          <span class="item-label">SEO:</span>
+          <span class="item-value">Excellent</span>
+        </div>
+        <div class="comparison-item">
+          <span class="item-label">Performance:</span>
+          <span class="item-value">Fast initial display</span>
+        </div>
+      </div>
+      
+      <div class="comparison-card">
+        <h3>Client-Side Rendering</h3>
+        <div class="comparison-item">
+          <span class="item-label">Data Input:</span>
+          <span class="item-value">✅ Fully Supported</span>
+        </div>
+        <div class="comparison-item">
+          <span class="item-label">Form Submission:</span>
+          <span class="item-value">AJAX/Fetch API</span>
+        </div>
+        <div class="comparison-item">
+          <span class="item-label">Validation:</span>
+          <span class="item-value">Real-time validation</span>
+        </div>
+        <div class="comparison-item">
+          <span class="item-label">User Feedback:</span>
+          <span class="item-value">Instant feedback</span>
+        </div>
+        <div class="comparison-item">
+          <span class="item-label">SEO:</span>
+          <span class="item-value">Requires JavaScript</span>
+        </div>
+        <div class="comparison-item">
+          <span class="item-label">Performance:</span>
+          <span class="item-value">Interactive after load</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Status Section -->
+  <div class="status-section">
+    <div class="section-header">
+      <h2>Form Processing Status</h2>
+      <p>Real-time status of form submissions</p>
+    </div>
+    
+    <div class="status-grid">
+      <div class="status-card">
+        <h4>SSR Form Status</h4>
+        <div class="status-content">
+          @if (isSubmitting()) {
+            <div class="status-item processing">
+              <span class="status-icon">⏳</span>
+              <span>Processing on server...</span>
+            </div>
+          } @else if (submitSuccess()) {
+            <div class="status-item success">
+              <span class="status-icon">✅</span>
+              <span>Form submitted successfully via SSR</span>
+            </div>
+          } @else {
+            <div class="status-item idle">
+              <span class="status-icon">📝</span>
+              <span>Ready for submission</span>
+            </div>
+          }
+        </div>
+      </div>
+      
+      <div class="status-card">
+        <h4>CSR Form Status</h4>
+        <div class="status-content">
+          @if (isCSRSubmitting()) {
+            <div class="status-item processing">
+              <span class="status-icon">⏳</span>
+              <span>Processing on client...</span>
+            </div>
+          } @else if (csrSubmitSuccess()) {
+            <div class="status-item success">
+              <span class="status-icon">✅</span>
+              <span>Form submitted successfully via CSR</span>
+            </div>
+          } @else {
+            <div class="status-item idle">
+              <span class="status-icon">📝</span>
+              <span>Ready for submission</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Technical Details -->
+  <div class="tech-details">
+    <div class="section-header">
+      <h2>Technical Implementation</h2>
+      <p>How both form types handle data submission</p>
+    </div>
+    
+    <div class="tech-grid">
+      <div class="tech-card">
+        <h4>SSR Implementation</h4>
+        <div class="code-preview">
+          <div class="code-line">
+            <span class="line-number">1</span>
+            <span class="code-text">// Form rendered on server</span>
+          </div>
+          <div class="code-line">
+            <span class="line-number">2</span>
+            <span class="code-text">// User inputs data</span>
+          </div>
+          <div class="code-line">
+            <span class="line-number">3</span>
+            <span class="code-text">// Form submits to server</span>
+          </div>
+          <div class="code-line">
+            <span class="line-number">4</span>
+            <span class="code-text">// Server processes data</span>
+          </div>
+          <div class="code-line">
+            <span class="line-number">5</span>
+            <span class="code-text">// Page refreshes with result</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tech-card">
+        <h4>CSR Implementation</h4>
+        <div class="code-preview">
+          <div class="code-line">
+            <span class="line-number">1</span>
+            <span class="code-text">// Form rendered by JavaScript</span>
+          </div>
+          <div class="code-line">
+            <span class="line-number">2</span>
+            <span class="code-text">// User inputs data</span>
+          </div>
+          <div class="code-line">
+            <span class="line-number">3</span>
+            <span class="code-text">// Real-time validation</span>
+          </div>
+          <div class="code-line">
+            <span class="line-number">4</span>
+            <span class="code-text">// AJAX submission</span>
+          </div>
+          <div class="code-line">
+            <span class="line-number">5</span>
+            <span class="code-text">// No page refresh</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

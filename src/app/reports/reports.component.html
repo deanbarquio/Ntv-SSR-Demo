@@ -1,0 +1,291 @@
+<div class="reports-container">
+  <!-- Header -->
+  <div class="reports-header">
+    <h1 class="page-title">Performance Reports</h1>
+    <p class="page-subtitle">
+      Real-time comparison between Server-Side Rendering (SSR) and Client-Side Rendering (CSR)
+    </p>
+    <div class="render-info">
+      <span>Rendered on: <strong>{{ isServer() ? 'Server' : 'Client' }}</strong></span>
+      <span>Last Updated: {{ currentTime() }}</span>
+      <span>Updates: {{ dataUpdateCount() }}</span>
+    </div>
+    <div class="load-time-info">
+      @if (serverLoadTime() > 0) {
+        <span>Server Load: {{ serverLoadTime() }}ms</span>
+      }
+      @if (clientLoadTime() > 0) {
+        <span>Client Load: {{ clientLoadTime() }}ms</span>
+        <span>Difference: {{ loadTimeDifference }}% slower</span>
+      }
+    </div>
+    
+    <!-- Real-time Status Indicators -->
+    @if (!isServer()) {
+      <div class="realtime-status">
+        <span class="status-item">
+          <span class="status-label">Real-time Status:</span>
+          <span class="status-value active">{{ realTimeStatus() }}</span>
+        </span>
+        <span class="status-item">
+          <span class="status-label">Connection:</span>
+          <span class="status-value" [class.connected]="connectionStatus() === 'Connected'" [class.reconnecting]="connectionStatus() === 'Reconnecting...'">
+            {{ connectionStatus() }}
+          </span>
+        </span>
+        <span class="status-item">
+          <span class="status-label">Data Stream:</span>
+          <span class="status-value">{{ dataStreamRate() }} updates</span>
+        </span>
+      </div>
+    }
+    
+    <button class="refresh-btn" (click)="refreshData()" [disabled]="loading()">
+      🔄 Refresh Data
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Loading performance data...</p>
+    </div>
+  }
+
+  @if (!loading()) {
+    <!-- Live Real-time Metrics (CSR Only) -->
+    @if (!isServer()) {
+      <section class="live-metrics-section">
+        <h2>🚀 Live Real-time Metrics (CSR Only)</h2>
+        <p class="section-description">
+          These metrics update every 500ms in real-time, demonstrating the power of client-side rendering for live data.
+        </p>
+        <div class="live-metrics-grid">
+          @for (metric of liveMetrics(); track metric.name) {
+            <div class="live-metric-card">
+              <div class="metric-header">
+                <h3>{{ metric.name }}</h3>
+                <span class="trend-icon" [style.color]="getTrendColor(metric.trend)">
+                  {{ getTrendIcon(metric.trend) }}
+                </span>
+              </div>
+              <div class="metric-value">{{ metric.value }}</div>
+              <div class="metric-trend" [style.color]="getTrendColor(metric.trend)">
+                {{ metric.trend.toUpperCase() }}
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- SSR vs CSR Comparison -->
+    <section class="comparison-section">
+      <h2>SSR vs CSR Performance Comparison</h2>
+      <p class="section-description">
+        These metrics are generated dynamically based on current time. Refresh the page to see different values!
+      </p>
+      <div class="comparison-grid">
+        @for (metric of performanceMetrics(); track metric.name) {
+          <div class="metric-card">
+            <h3>{{ metric.name }}</h3>
+            <div class="metric-values">
+              <div class="metric-item ssr">
+                <span class="metric-label">SSR</span>
+                <span class="metric-value">{{ metric.ssr }}{{ metric.unit }}</span>
+              </div>
+              <div class="metric-item csr">
+                <span class="metric-label">CSR</span>
+                <span class="metric-value">{{ metric.csr }}{{ metric.unit }}</span>
+              </div>
+            </div>
+            @if (getPerformanceDifference(metric).isBetter) {
+              <div class="improvement-badge">
+                <span class="improvement-icon">⚡</span>
+                {{ getPerformanceDifference(metric).percentage.toFixed(1) }}% faster with SSR
+              </div>
+            } @else {
+              <div class="difference-badge">
+                <span class="difference-icon">📊</span>
+                {{ getPerformanceDifference(metric).percentage.toFixed(1) }}% difference
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Real-time Data Chart -->
+    <section class="realtime-section">
+      <h2>Real-time Performance Data</h2>
+      <p class="section-description">
+        This chart updates every 2 seconds on the client-side, demonstrating the transition from static server data to dynamic client interactivity.
+        <strong>Current update count: {{ dataUpdateCount() }}</strong>
+      </p>
+      <div class="chart-container">
+        <div class="chart-bars">
+          @for (value of realTimeData(); track $index) {
+            <div class="chart-bar">
+              <div class="bar-fill" [style.height.%]="value"></div>
+              <span class="bar-label">{{ value.toFixed(0) }}%</span>
+            </div>
+          }
+        </div>
+        <div class="chart-legend">
+          <span class="legend-item">
+            <span class="legend-color ssr"></span>
+            Server-Side Data (Static)
+          </span>
+          <span class="legend-item">
+            <span class="legend-color csr"></span>
+            Client-Side Updates (Dynamic)
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Performance Score Chart -->
+    <section class="score-section">
+      <h2>Overall Performance Score</h2>
+      <p class="section-description">
+        These scores are calculated dynamically based on current performance metrics.
+      </p>
+      <div class="score-chart">
+        @for (item of chartData(); track item.label) {
+          <div class="score-item">
+            <div class="score-bar">
+              <div class="score-fill" [style.width.%]="item.value"></div>
+            </div>
+            <div class="score-info">
+              <span class="score-label">{{ item.label }}</span>
+              <span class="score-value">{{ item.value.toFixed(0) }}%</span>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Reports Tabs -->
+    <section class="reports-section">
+      <h2>Detailed Reports</h2>
+      <p class="section-description">
+        All report data is generated dynamically. Each refresh shows different values!
+      </p>
+      <div class="tabs">
+        <button 
+          class="tab-btn" 
+          [class.active]="activeTab() === 'overview'"
+          (click)="setActiveTab('overview')"
+        >
+          Overview
+        </button>
+        <button 
+          class="tab-btn" 
+          [class.active]="activeTab() === 'performance'"
+          (click)="setActiveTab('performance')"
+        >
+          Performance
+        </button>
+        <button 
+          class="tab-btn" 
+          [class.active]="activeTab() === 'seo'"
+          (click)="setActiveTab('seo')"
+        >
+          SEO
+        </button>
+        <button 
+          class="tab-btn" 
+          [class.active]="activeTab() === 'analytics'"
+          (click)="setActiveTab('analytics')"
+        >
+          Analytics
+        </button>
+      </div>
+
+      <div class="reports-grid">
+        @for (report of filteredReports; track report.id) {
+          <div class="report-card">
+            <div class="report-header">
+              <h3>{{ report.title }}</h3>
+              <span class="report-category">{{ report.category }}</span>
+            </div>
+            <div class="report-value">
+              <span class="value-number">{{ report.value }}</span>
+              @if (report.change > 0) {
+                <span class="change positive">+{{ report.change.toFixed(1) }}%</span>
+              } @else {
+                <span class="change negative">{{ report.change.toFixed(1) }}%</span>
+              }
+            </div>
+            <div class="report-timestamp">
+              Updated: {{ formatTimestamp(report.timestamp) }}
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- SSR Benefits Demo -->
+    <section class="benefits-demo">
+      <h2>SSR Benefits in Action</h2>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <h4>🚀 Immediate Data Display</h4>
+          <p>All metrics above are rendered on the server, so users see data immediately without waiting for JavaScript to load.</p>
+          <div class="benefit-indicator">
+            <span class="indicator-label">Current State:</span>
+            <span class="indicator-value" [class.server]="isServer()" [class.client]="!isServer()">
+              {{ isServer() ? 'Server-Rendered' : 'Client-Hydrated' }}
+            </span>
+          </div>
+        </div>
+        
+        <div class="benefit-card">
+          <h4>⚡ Real-time Updates</h4>
+          <p>The chart above updates every 2 seconds on the client-side, demonstrating the smooth transition from static to dynamic content.</p>
+          <div class="update-status">
+            <span class="status-label">Updates:</span>
+            <span class="status-value">{{ isServer() ? 'Disabled' : 'Active' }}</span>
+          </div>
+        </div>
+        
+        <div class="benefit-card">
+          <h4>🔍 SEO Optimization</h4>
+          <p>Search engines can crawl and index all performance data, improving search rankings for analytics pages.</p>
+          <div class="seo-score">
+            <span class="score-label">SEO Score:</span>
+            <span class="score-value">95/100</span>
+          </div>
+        </div>
+
+        <div class="benefit-card">
+          <h4>📊 Dynamic Data Generation</h4>
+          <p>All data is generated dynamically based on current time, showing real differences between server and client rendering.</p>
+          <div class="dynamic-info">
+            <span class="info-label">Data Updates:</span>
+            <span class="info-value">{{ dataUpdateCount() }} times</span>
+          </div>
+        </div>
+
+        <div class="benefit-card">
+          <h4>🔄 Real-time Streaming</h4>
+          <p>Client-side rendering enables real-time data streaming with live metrics updating every 500ms.</p>
+          <div class="streaming-info">
+            <span class="info-label">Stream Rate:</span>
+            <span class="info-value">{{ dataStreamRate() }} updates</span>
+          </div>
+        </div>
+
+        <div class="benefit-card">
+          <h4>🌐 Connection Monitoring</h4>
+          <p>Real-time connection status monitoring and automatic reconnection handling in client-side mode.</p>
+          <div class="connection-info">
+            <span class="info-label">Status:</span>
+            <span class="info-value">{{ connectionStatus() }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  }
+</div>

@@ -1,0 +1,90 @@
+<div class="app-container">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <h1 class="app-title">Angular SSR Demo</h1>
+        <span class="app-subtitle">Server-Side Rendering with Angular 20+</span>
+      </div>
+      
+      <nav class="main-nav">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
+          <span class="nav-icon">🏠</span>
+          Home
+        </a>
+        <a routerLink="/products" routerLinkActive="active" class="nav-link">
+          <span class="nav-icon">📦</span>
+          Products
+        </a>
+        <a routerLink="/reports" routerLinkActive="active" class="nav-link">
+          <span class="nav-icon">📊</span>
+          Reports
+        </a>
+        <a routerLink="/about" routerLinkActive="active" class="nav-link">
+          <span class="nav-icon">ℹ️</span>
+          About
+        </a>
+        <a routerLink="/contact" routerLinkActive="active" class="nav-link">
+          <span class="nav-icon">📧</span>
+          Contact
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-item">
+      <span class="status-label">Rendered on:</span>
+      <span class="status-value" [class.server]="isServer()" [class.client]="!isServer()">
+        {{ isServer() ? 'Server' : 'Client' }}
+      </span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Current Time:</span>
+      <span class="status-value">{{ currentTime() }}</span>
+    </div>
+    @if (!isServer()) {
+      <div class="status-item">
+        <span class="status-label">Status:</span>
+        <span class="status-value active">Live</span>
+      </div>
+    }
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Angular SSR Demo</h3>
+        <p>Demonstrating Server-Side Rendering with Angular 20+</p>
+      </div>
+      <div class="footer-section">
+        <h4>Features</h4>
+        <ul>
+          <li>Server-Side Rendering</li>
+          <li>Client-Side Hydration</li>
+          <li>SEO Optimization</li>
+          <li>Performance Monitoring</li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Resources</h4>
+        <ul>
+          <li>Angular Documentation</li>
+          <li>SSR Guide</li>
+          <li>Performance Tips</li>
+          <li>Best Practices</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Angular SSR Demo. Built with Angular 20+ and Server-Side Rendering</p>
+    </div>
+  </footer>
+</div>
