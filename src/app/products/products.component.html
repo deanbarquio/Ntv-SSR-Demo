@@ -1,4 +1,26 @@
 <div class="products-container">
+  <!-- Hydration Status Indicator -->
+  <div class="hydration-status" [class]="'hydration-status--' + getHydrationColor()">
+    <div class="hydration-indicator">
+      <div class="hydration-icon">
+        <span *ngIf="isServer()">🖥️</span>
+        <span *ngIf="!isServer() && !isHydrated()">⏳</span>
+        <span *ngIf="!isServer() && isHydrated()">✅</span>
+      </div>
+      <div class="hydration-info">
+        <div class="hydration-message">{{ getHydrationMessage() }}</div>
+        <div class="hydration-details" *ngIf="!isServer()">
+          <span class="hydration-time" *ngIf="hydrationTime()">
+            Hydrated at {{ hydrationTime() | date:'HH:mm:ss' }}
+          </span>
+          <span class="hydration-duration" *ngIf="hydrationDuration()">
+            ({{ getHydrationDurationText() }})
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Hero Section -->
   <div class="hero-section">
     <div class="hero-content">

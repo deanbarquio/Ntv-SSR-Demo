@@ -1,5 +1,5 @@
 // Import Angular core modules for component functionality
-import { Component, signal, OnInit, OnDestroy } from '@angular/core';
+import { Component, signal, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 // Import common directives for template functionality
 import { CommonModule } from '@angular/common';
 
@@ -52,6 +52,7 @@ interface PerformanceMetric {
  * 3. Performance comparison (SSR vs CSR)
  * 4. Progressive enhancement of static content
  * 5. Connection resilience and status monitoring
+ * 6. Hydration status tracking and visualization
  */
 @Component({
   selector: 'app-reports',
@@ -60,12 +61,20 @@ interface PerformanceMetric {
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.scss'
 })
-export class ReportsComponent implements OnInit, OnDestroy {
+export class ReportsComponent implements OnInit, OnDestroy, AfterViewInit {
   // SSR Detection Signal: Determines execution environment
   protected readonly isServer = signal(typeof window === 'undefined');
   
   // Mixed SSR/CSR Signal: Initial time rendered on server, updated on client
   protected readonly currentTime = signal(new Date().toLocaleString());
+  
+  // Hydration Status Signals
+  protected readonly isHydrated = signal(false);
+  protected readonly hydrationTime = signal<number | null>(null);
+  protected readonly hydrationDuration = signal<number | null>(null);
+  
+  // Hydration Animation States
+  protected readonly hydrationPhase = signal<'server' | 'loading' | 'hydrated'>('server');
   
   // ===== CSR SIGNALS (Dynamic data updated on client) =====
   // These signals contain data that's only available after client hydration
@@ -97,6 +106,9 @@ export class ReportsComponent implements OnInit, OnDestroy {
   private realTimeIntervalId?: number;
   private startTime = Date.now();
   private updateCounter = 0;
+  
+  // Track when component was created (for hydration timing)
+  private readonly componentCreated = Date.now();
 
   /**
    * Component Initialization - Lifecycle Hook
@@ -108,6 +120,13 @@ export class ReportsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.startTime = Date.now();
     this.loadInitialData();
+    
+    // Set initial hydration phase based on environment
+    if (typeof window === 'undefined') {
+      this.hydrationPhase.set('server');
+    } else {
+      this.hydrationPhase.set('loading');
+    }
     
     // Client-side only: Initialize real-time features
     // This ensures server-side rendering doesn't include client-specific code
@@ -135,6 +154,22 @@ export class ReportsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * After View Init - Lifecycle Hook
+   * 
+   * This method runs after the view is initialized and is perfect for
+   * detecting when hydration is complete and the app is fully interactive.
+   */
+  ngAfterViewInit() {
+    // Only run on client-side
+    if (typeof window !== 'undefined') {
+      // Use setTimeout to ensure this runs after Angular's change detection
+      setTimeout(() => {
+        this.markAsHydrated();
+      }, 100);
+    }
+  }
+
+  /**
    * Component Cleanup - Lifecycle Hook
    * 
    * Ensures proper cleanup of intervals to prevent memory leaks
@@ -147,6 +182,70 @@ export class ReportsComponent implements OnInit, OnDestroy {
     if (this.realTimeIntervalId) {
       clearInterval(this.realTimeIntervalId);
     }
+  }
+
+  /**
+   * Mark the application as fully hydrated
+   * 
+   * This method is called when the app has successfully transitioned
+   * from server-rendered content to fully interactive client-side mode.
+   */
+  private markAsHydrated() {
+    const now = Date.now();
+    const duration = now - this.componentCreated;
+    
+    // Update hydration status
+    this.isHydrated.set(true);
+    this.hydrationTime.set(now);
+    this.hydrationDuration.set(duration);
+    this.hydrationPhase.set('hydrated');
+
+    // Log hydration completion for debugging
+    console.log(`📊 Reports Hydration completed in ${duration}ms`);
+  }
+
+  /**
+   * Get hydration status message
+   */
+  protected getHydrationMessage(): string {
+    if (this.isServer()) {
+      return 'Server-Side Rendering';
+    }
+    
+    if (!this.isHydrated()) {
+      return 'Hydrating...';
+    }
+    
+    return 'Fully Hydrated';
+  }
+
+  /**
+   * Get hydration status color for styling
+   */
+  protected getHydrationColor(): string {
+    if (this.isServer()) {
+      return 'server';
+    }
+    
+    if (!this.isHydrated()) {
+      return 'loading';
+    }
+    
+    return 'hydrated';
+  }
+
+  /**
+   * Get hydration duration in a readable format
+   */
+  protected getHydrationDurationText(): string {
+    const duration = this.hydrationDuration();
+    if (duration === null) return '';
+    
+    if (duration < 1000) {
+      return `${duration}ms`;
+    }
+    
+    return `${(duration / 1000).toFixed(1)}s`;
   }
 
   /**

@@ -1,4 +1,26 @@
 <div class="home-container">
+  <!-- Hydration Status Indicator -->
+  <div class="hydration-status" [class]="'hydration-status--' + getHydrationColor()">
+    <div class="hydration-indicator">
+      <div class="hydration-icon">
+        <span *ngIf="isServer()">🖥️</span>
+        <span *ngIf="!isServer() && !isHydrated()">⏳</span>
+        <span *ngIf="!isServer() && isHydrated()">✅</span>
+      </div>
+      <div class="hydration-info">
+        <div class="hydration-message">{{ getHydrationMessage() }}</div>
+        <div class="hydration-details" *ngIf="!isServer()">
+          <span class="hydration-time" *ngIf="hydrationTime()">
+            Hydrated at {{ hydrationTime() | date:'HH:mm:ss' }}
+          </span>
+          <span class="hydration-duration" *ngIf="hydrationDuration()">
+            ({{ getHydrationDurationText() }})
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Hero Section -->
   <div class="hero-section">
     <div class="hero-content">
@@ -22,53 +44,7 @@
     </div>
   </div>
 
-  <!-- Features Section -->
-  <div class="features-section">
-    <div class="section-header">
-      <h2>Server-Side Rendering Benefits</h2>
-      <p>Discover how SSR transforms your Angular applications with better performance and SEO.</p>
-    </div>
-    
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🚀</div>
-        <h3>Fast Initial Load</h3>
-        <p>Content is rendered on the server, providing immediate display to users.</p>
-        <ul>
-          <li>Reduced Time to First Contentful Paint</li>
-          <li>Better Core Web Vitals scores</li>
-          <li>Improved perceived performance</li>
-          <li>Enhanced user experience</li>
-        </ul>
-      </div>
-      
-      <div class="feature-card">
-        <div class="feature-icon">🔍</div>
-        <h3>SEO Optimization</h3>
-        <p>Search engines can crawl and index your content effectively.</p>
-        <ul>
-          <li>Better search engine rankings</li>
-          <li>Social media sharing ready</li>
-          <li>Accessible to crawlers</li>
-          <li>Rich snippets support</li>
-        </ul>
-      </div>
-      
-      <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>Smooth Hydration</h3>
-        <p>Seamless transition from server-rendered to interactive content.</p>
-        <ul>
-          <li>Progressive enhancement</li>
-          <li>No content flashing</li>
-          <li>Maintains interactivity</li>
-          <li>Best of both worlds</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- SSR Demo Section -->
+  <!-- SSR Demo Section with Hydration Visualization -->
   <div class="workspace-section">
     <div class="section-header">
       <h2>SSR vs CSR Comparison</h2>
@@ -128,6 +104,141 @@
           <li>Interactive features become available</li>
         </ul>
         <button class="btn-primary">View Demo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-time Hydration Demo -->
+  <div class="hydration-demo-section">
+    <div class="section-header">
+      <h2>Hydration Status Demo</h2>
+      <p>Watch the real-time transition from server-rendered to client-side interactive.</p>
+    </div>
+    
+    <div class="hydration-demo">
+      <div class="demo-card">
+        <div class="demo-card-header">
+          <h3>Current Status</h3>
+          <div class="status-indicator" [class]="'status-indicator--' + getHydrationColor()">
+            <div class="status-dot"></div>
+            <span>{{ getHydrationMessage() }}</span>
+          </div>
+        </div>
+        <div class="demo-card-content">
+          <div class="status-grid">
+            <div class="status-item">
+              <div class="status-label">Environment</div>
+              <div class="status-value">
+                <span *ngIf="isServer()">🖥️ Server</span>
+                <span *ngIf="!isServer()">🌐 Client</span>
+              </div>
+            </div>
+            <div class="status-item">
+              <div class="status-label">Hydration Phase</div>
+              <div class="status-value">
+                <span class="phase-badge" [class]="'phase-badge--' + hydrationPhase()">
+                  {{ hydrationPhase() | titlecase }}
+                </span>
+              </div>
+            </div>
+            <div class="status-item" *ngIf="!isServer() && hydrationDuration()">
+              <div class="status-label">Hydration Time</div>
+              <div class="status-value">{{ getHydrationDurationText() }}</div>
+            </div>
+            <div class="status-item">
+              <div class="status-label">Real-time Clock</div>
+              <div class="status-value">{{ serverTime() }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="demo-card">
+        <div class="demo-card-header">
+          <h3>Interactive Features</h3>
+        </div>
+        <div class="demo-card-content">
+          <div class="feature-list">
+            <div class="feature-item" [class]="'feature-item--' + (isHydrated() ? 'active' : 'inactive')">
+              <div class="feature-icon">🎯</div>
+              <div class="feature-text">Button Clicks</div>
+              <div class="feature-status">
+                <span *ngIf="isHydrated()">✅ Active</span>
+                <span *ngIf="!isHydrated()">⏳ Loading</span>
+              </div>
+            </div>
+            <div class="feature-item" [class]="'feature-item--' + (isHydrated() ? 'active' : 'inactive')">
+              <div class="feature-icon">⚡</div>
+              <div class="feature-text">Real-time Updates</div>
+              <div class="feature-status">
+                <span *ngIf="isHydrated()">✅ Active</span>
+                <span *ngIf="!isHydrated()">⏳ Loading</span>
+              </div>
+            </div>
+            <div class="feature-item" [class]="'feature-item--' + (isHydrated() ? 'active' : 'inactive')">
+              <div class="feature-icon">🔄</div>
+              <div class="feature-text">State Management</div>
+              <div class="feature-status">
+                <span *ngIf="isHydrated()">✅ Active</span>
+                <span *ngIf="!isHydrated()">⏳ Loading</span>
+              </div>
+            </div>
+            <div class="feature-item" [class]="'feature-item--' + (isHydrated() ? 'active' : 'inactive')">
+              <div class="feature-icon">🎨</div>
+              <div class="feature-text">Animations</div>
+              <div class="feature-status">
+                <span *ngIf="isHydrated()">✅ Active</span>
+                <span *ngIf="!isHydrated()">⏳ Loading</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="features-section">
+    <div class="section-header">
+      <h2>Server-Side Rendering Benefits</h2>
+      <p>Discover how SSR transforms your Angular applications with better performance and SEO.</p>
+    </div>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <h3>Fast Initial Load</h3>
+        <p>Content is rendered on the server, providing immediate display to users.</p>
+        <ul>
+          <li>Reduced Time to First Contentful Paint</li>
+          <li>Better Core Web Vitals scores</li>
+          <li>Improved perceived performance</li>
+          <li>Enhanced user experience</li>
+        </ul>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>SEO Optimization</h3>
+        <p>Search engines can crawl and index your content effectively.</p>
+        <ul>
+          <li>Better search engine rankings</li>
+          <li>Social media sharing ready</li>
+          <li>Accessible to crawlers</li>
+          <li>Rich snippets support</li>
+        </ul>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Smooth Hydration</h3>
+        <p>Seamless transition from server-rendered to interactive content.</p>
+        <ul>
+          <li>Progressive enhancement</li>
+          <li>No content flashing</li>
+          <li>Maintains interactivity</li>
+          <li>Best of both worlds</li>
+        </ul>
       </div>
     </div>
   </div>
