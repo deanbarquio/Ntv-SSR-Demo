@@ -6,6 +6,7 @@ import { ProductsComponent } from './products/products.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { ReportsComponent } from './reports/reports.component';
+import { SsrDemoComponent } from './ssr-demo/ssr-demo.component';
 
 /**
  * Client-Side Routes Configuration
@@ -23,6 +24,7 @@ import { ReportsComponent } from './reports/reports.component';
  * - 'about' → AboutComponent (about page)
  * - 'contact' → ContactComponent (contact page)
  * - 'reports' → ReportsComponent (reports page)
+ * - 'ssr-demo' → SsrDemoComponent (SSR showcase page)
  * - '**' → Redirect to home (catch-all for invalid routes)
  */
 export const routes: Routes = [
@@ -40,6 +42,9 @@ export const routes: Routes = [
   
   // Reports page
   { path: 'reports', component: ReportsComponent },
+  
+  // SSR Demo page
+  { path: 'ssr-demo', component: SsrDemoComponent },
   
   // Wildcard route - catches any URL that doesn't match the above routes
   // Redirects to the home page (empty path)

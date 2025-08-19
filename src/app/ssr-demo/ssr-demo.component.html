@@ -1,0 +1,392 @@
+<div class="ssr-demo-container">
+  <!-- Hydration Status Indicator -->
+  <div class="hydration-status" [class]="'hydration-status--' + getHydrationColor()">
+    <div class="hydration-indicator">
+      <div class="hydration-icon">
+        <span *ngIf="isServer()">🖥️</span>
+        <span *ngIf="!isServer() && !isHydrated()">⏳</span>
+        <span *ngIf="!isServer() && isHydrated()">✅</span>
+      </div>
+      <div class="hydration-info">
+        <div class="hydration-message">{{ getHydrationMessage() }}</div>
+        <div class="hydration-details" *ngIf="!isServer()">
+          <span class="hydration-time" *ngIf="hydrationTime()">
+            Hydrated at {{ hydrationTime() | date:'HH:mm:ss' }}
+          </span>
+          <span class="hydration-duration" *ngIf="hydrationDuration()">
+            ({{ getHydrationDurationText() }})
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Screen -->
+  @if (isLoading()) {
+    <div class="loading-screen">
+      <div class="loading-content">
+        <div class="loading-spinner"></div>
+        <h2 class="loading-title">SSR Demo Loading</h2>
+        <p class="loading-message">{{ loadingMessage() }}</p>
+        <div class="loading-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="loadingProgress()"></div>
+          </div>
+          <span class="progress-text">{{ loadingProgress() }}%</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (!isLoading()) {
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Header Section -->
+      <header class="demo-header">
+        <div class="header-content">
+          <h1 class="demo-title">🎭 SSR Demo Showcase</h1>
+          <p class="demo-subtitle">
+            Advanced Server-Side Rendering with Animations, Graphs, and Error Handling
+          </p>
+          <!-- SSR DIRECT VALUE RENDERING: These values are rendered directly in HTML during server-side rendering -->
+          <div class="header-stats">
+            <div class="stat-item">
+              <span class="stat-label">Server Render:</span>
+              <!-- Direct HTML rendering - value appears in initial HTML without JavaScript -->
+              <span class="stat-value">{{ serverRenderTime() }}ms</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Client Hydration:</span>
+              <!-- Direct HTML rendering - value appears in initial HTML without JavaScript -->
+              <span class="stat-value">{{ clientHydrationTime() }}ms</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Total Load:</span>
+              <!-- Direct HTML rendering - value appears in initial HTML without JavaScript -->
+              <span class="stat-value">{{ totalLoadTime() }}ms</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Navigation Tabs -->
+      <nav class="demo-nav">
+        <div class="nav-tabs">
+          <button 
+            class="nav-tab" 
+            [class.active]="activeTab() === 'overview'"
+            (click)="setActiveTab('overview')"
+          >
+            📊 Overview
+          </button>
+          <button 
+            class="nav-tab" 
+            [class.active]="activeTab() === 'animations'"
+            (click)="setActiveTab('animations')"
+          >
+            ✨ Animations
+          </button>
+          <button 
+            class="nav-tab" 
+            [class.active]="activeTab() === 'graphs'"
+            (click)="setActiveTab('graphs')"
+          >
+            📈 Graphs
+          </button>
+          <button 
+            class="nav-tab" 
+            [class.active]="activeTab() === 'errors'"
+            (click)="setActiveTab('errors')"
+          >
+            ⚠️ Error Handling
+          </button>
+        </div>
+      </nav>
+
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <!-- Overview Tab -->
+        @if (activeTab() === 'overview') {
+          <div class="overview-section">
+            <div class="overview-grid">
+              <!-- Performance Metrics -->
+              <div class="metric-card">
+                <div class="metric-header">
+                  <h3>Performance Metrics</h3>
+                  <span class="metric-icon">⚡</span>
+                </div>
+                <div class="metric-content">
+                  <!-- SSR DIRECT VALUE RENDERING: Performance metrics rendered directly in HTML -->
+                  <div class="metric-item">
+                    <span class="metric-label">SEO Score</span>
+                    <div class="metric-bar">
+                      <!-- Direct HTML rendering - width calculated and rendered on server -->
+                      <div class="metric-fill" [style.width.%]="seoScore()"></div>
+                    </div>
+                    <!-- Direct HTML rendering - percentage value appears in initial HTML -->
+                    <span class="metric-value">{{ seoScore() }}%</span>
+                  </div>
+                  <div class="metric-item">
+                    <span class="metric-label">Accessibility</span>
+                    <div class="metric-bar">
+                      <!-- Direct HTML rendering - width calculated and rendered on server -->
+                      <div class="metric-fill" [style.width.%]="accessibilityScore()"></div>
+                    </div>
+                    <!-- Direct HTML rendering - percentage value appears in initial HTML -->
+                    <span class="metric-value">{{ accessibilityScore() }}%</span>
+                  </div>
+                  <div class="metric-item">
+                    <span class="metric-label">Performance</span>
+                    <div class="metric-bar">
+                      <!-- Direct HTML rendering - width calculated and rendered on server -->
+                      <div class="metric-fill" [style.width.%]="performanceScore()"></div>
+                    </div>
+                    <!-- Direct HTML rendering - percentage value appears in initial HTML -->
+                    <span class="metric-value">{{ performanceScore() }}%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SSR Benefits -->
+              <div class="benefits-card">
+                <div class="benefits-header">
+                  <h3>SSR Benefits</h3>
+                  <span class="benefits-icon">🚀</span>
+                </div>
+                <div class="benefits-list">
+                  <div class="benefit-item">
+                    <span class="benefit-icon">🔍</span>
+                    <span class="benefit-text">SEO Optimized</span>
+                  </div>
+                  <div class="benefit-item">
+                    <span class="benefit-icon">⚡</span>
+                    <span class="benefit-text">Fast Initial Load</span>
+                  </div>
+                  <div class="benefit-item">
+                    <span class="benefit-icon">📱</span>
+                    <span class="benefit-text">Mobile Friendly</span>
+                  </div>
+                  <div class="benefit-item">
+                    <span class="benefit-icon">🎯</span>
+                    <span class="benefit-text">Better UX</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Animations Tab -->
+        @if (activeTab() === 'animations') {
+          <div class="animations-section">
+            <div class="animations-header">
+              <h2>Server-Side Animations</h2>
+              <p>These animations are activated during server rendering and enhanced on the client</p>
+              <button class="toggle-btn" (click)="toggleAnimations()">
+                {{ showAnimations() ? 'Hide' : 'Show' }} Animations
+              </button>
+            </div>
+
+            @if (showAnimations()) {
+              <div class="animations-grid">
+                <!-- SSR DIRECT VALUE RENDERING: Animation data rendered directly in HTML -->
+                @for (animation of animationStates(); track animation.id) {
+                  <div class="animation-card" [class]="'animation-' + animation.id + (animation.isActive ? ' active' : '')">
+                    <div class="animation-content">
+                      <div class="animation-icon">✨</div>
+                      <!-- Direct HTML rendering - animation name appears in initial HTML -->
+                      <h3>{{ animation.id | titlecase }}</h3>
+                      <!-- Direct HTML rendering - duration value appears in initial HTML -->
+                      <p>Duration: {{ animation.duration }}ms</p>
+                      <!-- Direct HTML rendering - delay value appears in initial HTML -->
+                      <p>Delay: {{ animation.delay }}ms</p>
+                      <div class="animation-status">
+                        <span class="status-dot" [class.active]="animation.isActive"></span>
+                        <!-- Direct HTML rendering - status text appears in initial HTML -->
+                        {{ animation.isActive ? 'Active' : 'Inactive' }}
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Graphs Tab -->
+        @if (activeTab() === 'graphs') {
+          <div class="graphs-section">
+            <div class="graphs-header">
+              <h2>Performance Graphs</h2>
+              <p>Server-rendered graphs with real-time data visualization</p>
+              <button class="toggle-btn" (click)="toggleGraphs()">
+                {{ showGraphs() ? 'Hide' : 'Show' }} Graphs
+              </button>
+            </div>
+
+            @if (showGraphs()) {
+              <!-- SSR Fallback or ApexCharts (client) -->
+              @if (hasApex()) {
+                <div class="graphs-grid">
+                  
+                  <div class="graph-card line-graph">
+                    <div class="graph-header">
+                      <h3>Line: Performance Over Time</h3>
+                    </div>
+                    <apx-chart
+                      [series]="lineChartOptions!.series"
+                      [chart]="lineChartOptions!.chart"
+                      [xaxis]="lineChartOptions!.xaxis"
+                      [stroke]="lineChartOptions!.stroke"
+                      [dataLabels]="lineChartOptions!.dataLabels"
+                      [title]="lineChartOptions!.title"
+                      [tooltip]="lineChartOptions!.tooltip"
+                      [fill]="lineChartOptions!.fill"
+                    ></apx-chart>
+                  </div>
+
+                  <div class="graph-card">
+                    <div class="graph-header">
+                      <h3>Donut: Rendering Mix</h3>
+                    </div>
+                    <apx-chart
+                      [series]="donutChartOptions!.series"
+                      [chart]="donutChartOptions!.chart"
+                      [labels]="donutChartOptions!.labels"
+                      [responsive]="donutChartOptions!.responsive"
+                      [legend]="donutChartOptions!.legend"
+                      [title]="donutChartOptions!.title"
+                    ></apx-chart>
+                  </div>
+                </div>
+              } @else {
+                <!-- SSR DIRECT VALUE RENDERING: Graph data rendered directly in HTML (SSR fallback) -->
+                <div class="graphs-grid">
+                  @for (item of graphData(); track item.label) {
+                    <div class="graph-card">
+                      <div class="graph-header">
+                        <!-- Direct HTML rendering - graph label appears in initial HTML -->
+                        <h3>{{ item.label }}</h3>
+                        <span class="trend-icon" [style.color]="getTrendColor(item.trend)">{{ getTrendIcon(item.trend) }}</span>
+                      </div>
+                      <div class="graph-visualization">
+                        <div class="graph-bar">
+                          <!-- Direct HTML rendering - bar width and color calculated on server -->
+                          <div class="graph-fill" [style.width.%]="item.value" [style.background-color]="item.color"></div>
+                        </div>
+                        <!-- Direct HTML rendering - percentage value appears in initial HTML -->
+                        <div class="graph-value">{{ item.value }}%</div>
+                      </div>
+                      <div class="graph-footer">
+                        <!-- Direct HTML rendering - performance status calculated and rendered on server -->
+                        <span class="performance-status" [style.color]="getPerformanceStatus(item.value).color">
+                          {{ getPerformanceStatus(item.value).status }}
+                        </span>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            }
+          </div>
+        }
+
+        <!-- Error Handling Tab -->
+        @if (activeTab() === 'errors') {
+          <div class="errors-section">
+            <div class="errors-header">
+              <h2>Error Handling & Fallback UX</h2>
+              <p>Demonstrating robust error handling and graceful degradation</p>
+              <button class="toggle-btn" (click)="toggleErrorDemo()">
+                {{ showErrors() ? 'Hide' : 'Show' }} Error Demo
+              </button>
+            </div>
+
+            @if (showErrors()) {
+              <div class="error-demo">
+                @if (errorState().hasError) {
+                  <div class="error-card" [class]="'error-' + errorState().errorType">
+                    <div class="error-header">
+                      <span class="error-icon">⚠️</span>
+                      <h3>Error Occurred</h3>
+                    </div>
+                    <div class="error-content">
+                      <!-- Direct HTML rendering - error message appears in initial HTML -->
+                      <p class="error-message">{{ errorState().errorMessage }}</p>
+                      <div class="error-details">
+                        <!-- Direct HTML rendering - error type appears in initial HTML -->
+                        <span class="error-type">Type: {{ errorState().errorType | titlecase }}</span>
+                        <!-- Direct HTML rendering - retry count appears in initial HTML -->
+                        <span class="retry-count">Retry Count: {{ errorState().retryCount }}</span>
+                      </div>
+                    </div>
+                    <div class="error-actions">
+                      <button class="retry-btn" (click)="retryOperation()">
+                        🔄 Retry Operation
+                      </button>
+                      <button class="dismiss-btn" (click)="toggleErrorDemo()">
+                        ✕ Dismiss
+                      </button>
+                    </div>
+                  </div>
+                } @else {
+                  <div class="success-card">
+                    <div class="success-header">
+                      <span class="success-icon">✅</span>
+                      <h3>All Systems Operational</h3>
+                    </div>
+                    <div class="success-content">
+                      <p>No errors detected. The application is running smoothly.</p>
+                      <div class="success-metrics">
+                        <div class="metric">
+                          <span class="metric-label">Uptime</span>
+                          <span class="metric-value">99.9%</span>
+                        </div>
+                        <div class="metric">
+                          <span class="metric-label">Response Time</span>
+                          <!-- Direct HTML rendering - server render time appears in initial HTML -->
+                          <span class="metric-value">{{ serverRenderTime() }}ms</span>
+                        </div>
+                        <div class="metric">
+                          <span class="metric-label">Error Rate</span>
+                          <span class="metric-value">0%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+
+            <!-- Error Handling Features -->
+            <div class="error-features">
+              <h3>Error Handling Features</h3>
+              <div class="features-grid">
+                <div class="feature-item">
+                  <span class="feature-icon">🛡️</span>
+                  <h4>Error Boundaries</h4>
+                  <p>Graceful error containment and recovery</p>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">🔄</span>
+                  <h4>Auto Retry</h4>
+                  <p>Automatic retry mechanisms for failed operations</p>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">📱</span>
+                  <h4>Fallback UI</h4>
+                  <p>Alternative content when errors occur</p>
+                </div>
+                <div class="feature-item">
+                  <span class="feature-icon">📊</span>
+                  <h4>Error Monitoring</h4>
+                  <p>Real-time error tracking and reporting</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

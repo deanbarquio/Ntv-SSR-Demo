@@ -181,7 +181,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (duration === null) return '';
     
     if (duration < 1000) {
-      return `${duration}ms`;
+       return `${duration}ms`;
     }
     
     return `${(duration / 1000).toFixed(1)}s`;
