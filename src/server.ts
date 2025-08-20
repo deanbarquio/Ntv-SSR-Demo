@@ -80,6 +80,13 @@ app.use((req, res, next) => {
       response ? writeResponseToNodeResponse(response, res) : next();
     })
     .catch(next); // Pass any errors to Express error handling
+
+/*     This block says:
+👉 “If it’s not a static file, let Angular SSR try to render the page.
+If Angular gives HTML, send it to the browser.
+If not, move on.
+If there’s an error, let Express handle it.” */
+
 });
 
 /**

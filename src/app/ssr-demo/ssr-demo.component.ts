@@ -335,9 +335,16 @@ export class SsrDemoComponent implements OnInit, AfterViewInit {
 
   /** Mark animation flags as active **/
   private activateAnimations() {
+    // Reset animations first to ensure they trigger
     const animations = this.animationStates();
-    const updatedAnimations = animations.map((animation) => ({ ...animation, isActive: true }));
-    this.animationStates.set(updatedAnimations);
+    const resetAnimations = animations.map((animation) => ({ ...animation, isActive: false }));
+    this.animationStates.set(resetAnimations);
+    
+    // Then activate them with a small delay to ensure CSS classes are updated
+    setTimeout(() => {
+      const updatedAnimations = animations.map((animation) => ({ ...animation, isActive: true }));
+      this.animationStates.set(updatedAnimations);
+    }, 100);
   }
 
   /** Error handling hooks **/
@@ -381,6 +388,13 @@ export class SsrDemoComponent implements OnInit, AfterViewInit {
     this.hydrationDuration.set(duration);
     this.hydrationPhase.set('hydrated');
     console.log(`🎭 SSR Demo Hydration completed in ${duration}ms`);
+    
+    // Trigger animations after hydration if animations tab is active
+    if (this.activeTab() === 'animations' && this.showAnimations()) {
+      setTimeout(() => {
+        this.activateAnimations();
+      }, 500);
+    }
   }
 
   // --- Client interactivity (CSR-only behaviors) ---
@@ -389,7 +403,15 @@ export class SsrDemoComponent implements OnInit, AfterViewInit {
     setTimeout(() => { this.loadingMessage.set('Operation retried successfully!'); }, 1000);
   }
 
-  protected toggleAnimations() { this.showAnimations.update(show => !show); }
+  protected toggleAnimations() { 
+    this.showAnimations.update(show => !show); 
+    // Trigger animations when showing
+    if (this.showAnimations()) {
+      setTimeout(() => {
+        this.activateAnimations();
+      }, 200);
+    }
+  }
   protected toggleGraphs() { this.showGraphs.update(show => !show); }
 
   protected toggleErrorDemo() {
@@ -402,7 +424,15 @@ export class SsrDemoComponent implements OnInit, AfterViewInit {
     }
   }
 
-  protected setActiveTab(tab: string) { this.activeTab.set(tab); }
+  protected setActiveTab(tab: string) { 
+    this.activeTab.set(tab); 
+    // Trigger animations when animations tab is selected
+    if (tab === 'animations' && this.showAnimations()) {
+      setTimeout(() => {
+        this.activateAnimations();
+      }, 300);
+    }
+  }
 
   protected getHydrationMessage(): string { if (this.isServer()) return 'Server-Side Rendering'; if (!this.isHydrated()) return 'Hydrating...'; return 'Fully Hydrated'; }
   protected getHydrationColor(): string { if (this.isServer()) return 'server'; if (!this.isHydrated()) return 'loading'; return 'hydrated'; }

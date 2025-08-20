@@ -16,6 +16,8 @@ export const serverRoutes: ServerRoute[] = [
     // '**' means all routes - this will prerender every route in the application
     // This ensures that all pages are server-rendered for better SEO and initial load performance
     path: '**',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Prerender,
+    
+    /* Can be Prerender, Server, or Client just check the view page source to see the render mode*/
   }
 ];
