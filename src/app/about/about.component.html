@@ -2,217 +2,1005 @@
   <!-- Hero Section -->
   <div class="hero-section">
     <div class="hero-content">
-      <h1 class="hero-title">About Angular SSR Studio</h1>
+      <h1 class="hero-title">CSR vs SSR: Complete Comparison</h1>
       <p class="hero-subtitle">
-        The next-generation development platform that combines the power of Server-Side Rendering 
-        with modern Angular development practices.
+        Understanding the fundamental differences between Client-Side Rendering (CSR) 
+        and Server-Side Rendering (SSR) in modern web development
       </p>
     </div>
   </div>
 
-  <!-- Mission Section -->
-  <div class="mission-section">
+
+
+  <!-- Overview Section -->
+  <div class="overview-section">
     <div class="section-content">
       <div class="content-text">
-        <h2>Our Mission</h2>
+        <h2>What is the Difference?</h2>
         <p>
-          We're building the future of web development by creating tools that make it easier 
-          for developers to build fast, SEO-friendly, and user-centric applications. Our platform 
-          combines the best of server-side rendering with modern client-side interactivity.
+          <strong>Client-Side Rendering (CSR)</strong> renders the entire application in the browser using JavaScript. 
+          The server sends a minimal HTML file, and the browser downloads JavaScript to build the page.
         </p>
         <p>
-          Angular SSR Studio is designed to accelerate your entire development lifecycle, 
-          from initial setup to production deployment, with AI-powered assistance and 
-          real-time collaboration features.
+          <strong>Server-Side Rendering (SSR)</strong> renders the initial HTML on the server and sends it to the browser. 
+          The browser then "hydrates" the page to make it interactive.
         </p>
       </div>
-      <div class="content-visual">
-        <div class="mission-card">
-          <div class="card-icon">🎯</div>
-          <h3>Build Faster</h3>
-          <p>Accelerate development with AI-powered tools and modern frameworks</p>
+      <div class="overview-visual">
+        <div class="comparison-card">
+          <div class="comparison-header">
+            <span class="comparison-icon">🌐</span>
+            <h3>Rendering Flow</h3>
+          </div>
+          <div class="flow-diagram">
+            <div class="flow-step">
+              <span class="step-number">1</span>
+              <span class="step-text">Server Request</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+              <span class="step-number">2</span>
+              <span class="step-text">HTML Generation</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+              <span class="step-number">3</span>
+              <span class="step-text">Browser Display</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Team Section -->
-  <div class="team-section">
+  <!-- Code Comparison Section -->
+  <div class="comparison-section">
     <div class="section-header">
-      <h2>Meet Our Team</h2>
-      <p>Passionate developers and designers working to revolutionize web development</p>
+      <h2>Code Implementation Differences</h2>
+      <p>Side-by-side comparison of how CSR and SSR are implemented in Angular</p>
+    </div>
+
+    <!-- Simple Syntax Legend -->
+    <div class="simple-legend">
+      <div class="legend-items">
+        <div class="legend-item">
+          <span class="legend-color keyword"></span>
+          <span class="legend-label">Keywords</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color function"></span>
+          <span class="legend-label">Functions</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color class"></span>
+          <span class="legend-label">Classes</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color variable"></span>
+          <span class="legend-label">Variables</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color string"></span>
+          <span class="legend-label">Strings</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color comment"></span>
+          <span class="legend-label">Comments</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color html-tag"></span>
+          <span class="legend-label">HTML Tags</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color css-selector"></span>
+          <span class="legend-label">CSS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entry Points Comparison -->
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <div class="card-header">
+          <h3>🌐 Client-Side Rendering (CSR)</h3>
+          <span class="card-badge csr">CSR Only</span>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="file-name">main.ts</span>
+            <span class="language">TypeScript</span>
+          </div>
+          <pre class="code-content"><code><span class="comment">// CSR Entry Point</span>
+<span class="keyword">import</span> &#123; <span class="function">bootstrapApplication</span> &#125; <span class="keyword">from</span> <span class="string">'@angular/platform-browser'</span>;
+<span class="keyword">import</span> &#123; <span class="variable">appConfig</span> &#125; <span class="keyword">from</span> <span class="string">'./app/app.config'</span>;
+<span class="keyword">import</span> &#123; <span class="class">App</span> &#125; <span class="keyword">from</span> <span class="string">'./app/app'</span>;
+
+<span class="function">bootstrapApplication</span>(<span class="class">App</span>, <span class="variable">appConfig</span>)
+  .<span class="function">catch</span>((<span class="variable">err</span>) => <span class="function">console</span>.<span class="function">error</span>(<span class="variable">err</span>));</code></pre>
+        </div>
+        <div class="code-explanation">
+          <h4>What happens:</h4>
+          <ul>
+            <li>Browser downloads minimal HTML</li>
+            <li>JavaScript loads and bootstraps Angular</li>
+            <li>Components render in browser</li>
+            <li>No server-side processing</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="comparison-card">
+        <div class="card-header">
+          <h3>🚀 Server-Side Rendering (SSR)</h3>
+          <span class="card-badge ssr">SSR + CSR</span>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="file-name">main.server.ts</span>
+            <span class="language">TypeScript</span>
+          </div>
+          <pre class="code-content"><code><span class="comment">// SSR Entry Point</span>
+<span class="keyword">import</span> &#123; <span class="function">bootstrapApplication</span> &#125; <span class="keyword">from</span> <span class="string">'@angular/platform-browser'</span>;
+<span class="keyword">import</span> &#123; <span class="variable">config</span> &#125; <span class="keyword">from</span> <span class="string">'./app/app.config.server'</span>;
+<span class="keyword">import</span> &#123; <span class="class">App</span> &#125; <span class="keyword">from</span> <span class="string">'./app/app'</span>;
+
+<span class="keyword">const</span> <span class="variable">bootstrap</span> = () => <span class="function">bootstrapApplication</span>(<span class="class">App</span>, <span class="variable">config</span>);
+<span class="keyword">export</span> <span class="keyword">default</span> <span class="variable">bootstrap</span>;</code></pre>
+        </div>
+        <div class="code-explanation">
+          <h4>What happens:</h4>
+          <ul>
+            <li>Server receives request</li>
+            <li>Angular renders components on server</li>
+            <li>Complete HTML sent to browser</li>
+            <li>Browser hydrates for interactivity</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Configuration Comparison -->
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <div class="card-header">
+          <h3>⚙️ CSR Configuration</h3>
+          <span class="card-badge csr">Client Only</span>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="file-name">app.config.ts</span>
+            <span class="language">TypeScript</span>
+          </div>
+          <pre class="code-content"><code><span class="keyword">export</span> <span class="keyword">const</span> <span class="variable">appConfig</span>: <span class="type">ApplicationConfig</span> = &#123;
+  <span class="property">providers</span>: [
+    <span class="function">provideBrowserGlobalErrorListeners</span>(),
+    <span class="function">provideZonelessChangeDetection</span>(),
+    <span class="function">provideRouter</span>(<span class="variable">routes</span>),
+    <span class="function">provideClientHydration</span>(<span class="function">withEventReplay</span>())
+  ]
+&#125;;</code></pre>
+        </div>
+        <div class="code-explanation">
+          <h4>Features:</h4>
+          <ul>
+            <li>Browser-specific error handling</li>
+            <li>Client-side change detection</li>
+            <li>Client routing</li>
+            <li>Hydration support</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="comparison-card">
+        <div class="card-header">
+          <h3>⚙️ SSR Configuration</h3>
+          <span class="card-badge ssr">Server + Client</span>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="file-name">app.config.server.ts</span>
+            <span class="language">TypeScript</span>
+          </div>
+          <pre class="code-content"><code><span class="keyword">const</span> <span class="variable">serverConfig</span>: <span class="type">ApplicationConfig</span> = &#123;
+  <span class="property">providers</span>: [
+    <span class="function">provideServerRendering</span>(<span class="function">withRoutes</span>(<span class="variable">serverRoutes</span>))
+  ]
+&#125;;
+
+<span class="keyword">export</span> <span class="keyword">const</span> <span class="variable">config</span> = <span class="function">mergeApplicationConfig</span>(<span class="variable">appConfig</span>, <span class="variable">serverConfig</span>);</code></pre>
+        </div>
+        <div class="code-explanation">
+          <h4>Features:</h4>
+          <ul>
+            <li>Server-side rendering engine</li>
+            <li>Server routing configuration</li>
+            <li>Merged client + server config</li>
+            <li>Universal rendering support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Component Comparison -->
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <div class="card-header">
+          <h3>🧩 CSR Component</h3>
+          <span class="card-badge csr">Browser Only</span>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="file-name">products.component.ts</span>
+            <span class="language">TypeScript</span>
+          </div>
+          <pre class="code-content"><code><span class="keyword">export</span> <span class="keyword">class</span> <span class="class">ProductsComponent</span> &#123;
+  <span class="property">products</span>: <span class="type">Product</span>[] = [];
+  
+  <span class="function">ngOnInit</span>() &#123;
+    <span class="comment">// Always runs in browser</span>
+    <span class="keyword">this</span>.<span class="function">loadProducts</span>();
+  &#125;
+  
+  <span class="keyword">private</span> <span class="function">loadProducts</span>() &#123;
+    <span class="function">fetch</span>(<span class="string">'/api/products'</span>)
+      .<span class="function">then</span>(<span class="variable">response</span> => <span class="variable">response</span>.<span class="function">json</span>())
+      .<span class="function">then</span>(<span class="variable">data</span> => <span class="keyword">this</span>.<span class="property">products</span> = <span class="variable">data</span>);
+  &#125;
+&#125;</code></pre>
+        </div>
+        <div class="code-explanation">
+          <h4>Characteristics:</h4>
+          <ul>
+            <li>Browser-only execution</li>
+            <li>Manual data fetching</li>
+            <li>No server awareness</li>
+            <li>Simple implementation</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="comparison-card">
+        <div class="card-header">
+          <h3>🧩 SSR Component</h3>
+          <span class="card-badge ssr">Universal</span>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="file-name">ssr-demo.component.ts</span>
+            <span class="language">TypeScript</span>
+          </div>
+          <pre class="code-content"><code><span class="keyword">export</span> <span class="keyword">class</span> <span class="class">SsrDemoComponent</span> &#123;
+  <span class="comment">// Environment detection</span>
+  <span class="keyword">protected</span> <span class="keyword">readonly</span> <span class="property">isServer</span> = <span class="function">signal</span>(<span class="keyword">typeof</span> <span class="variable">window</span> === <span class="string">'undefined'</span>);
+  <span class="keyword">private</span> <span class="keyword">readonly</span> <span class="property">isBrowser</span> = <span class="keyword">typeof</span> <span class="variable">window</span> !== <span class="string">'undefined'</span>;
+  
+  <span class="comment">// Hydration state tracking</span>
+  <span class="keyword">protected</span> <span class="keyword">readonly</span> <span class="property">isHydrated</span> = <span class="function">signal</span>(<span class="keyword">false</span>);
+  
+  <span class="function">ngOnInit</span>() &#123;
+    <span class="comment">// Runs on server AND client</span>
+    <span class="keyword">const</span> <span class="variable">data</span> = <span class="keyword">this</span>.<span class="property">route</span>.<span class="property">snapshot</span>.<span class="property">data</span>[<span class="string">'graphData'</span>] ?? [];
+    <span class="keyword">this</span>.<span class="property">graphData</span>.<span class="function">set</span>(<span class="variable">data</span>);
+    
+    <span class="comment">// Browser-only code is guarded</span>
+    <span class="keyword">if</span> (<span class="keyword">this</span>.<span class="property">isBrowser</span>) &#123;
+      <span class="keyword">this</span>.<span class="function">initCharts</span>();
+    &#125;
+  &#125;
+&#125;</code></pre>
+        </div>
+        <div class="code-explanation">
+          <h4>Characteristics:</h4>
+          <ul>
+            <li>Server + client execution</li>
+            <li>Environment detection</li>
+            <li>Hydration state tracking</li>
+            <li>Progressive enhancement</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Template Comparison -->
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <div class="card-header">
+          <h3>📄 CSR Template</h3>
+          <span class="card-badge csr">Client Rendering</span>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="file-name">products.component.html</span>
+            <span class="language">HTML</span>
+          </div>
+          <pre class="code-content"><code>&lt;<span class="html-tag">div</span> <span class="html-attribute">class</span>=<span class="html-string">"products"</span> <span class="html-attribute">*ngIf</span>=<span class="html-string">"products.length > 0"</span>&gt;
+  &lt;<span class="html-tag">div</span> <span class="html-attribute">class</span>=<span class="html-string">"product"</span> <span class="html-attribute">*ngFor</span>=<span class="html-string">"let product of products"</span>&gt;
+    &lt;<span class="html-tag">h3</span>&gt;[product name]&lt;/<span class="html-tag">h3</span>&gt;
+    &lt;<span class="html-tag">p</span>&gt;[product description]&lt;/<span class="html-tag">p</span>&gt;
+  &lt;/<span class="html-tag">div</span>&gt;
+&lt;/<span class="html-tag">div</span>&gt;
+&lt;<span class="html-tag">div</span> <span class="html-attribute">class</span>=<span class="html-string">"loading"</span> <span class="html-attribute">*ngIf</span>=<span class="html-string">"!products.length"</span>&gt;
+  Loading products...
+&lt;/<span class="html-tag">div</span>&gt;</code></pre>
+        </div>
+        <div class="code-explanation">
+          <h4>Behavior:</h4>
+          <ul>
+            <li>Shows loading state initially</li>
+            <li>Content appears after JavaScript loads</li>
+            <li>Empty HTML sent to browser</li>
+            <li>No SEO-friendly content</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="comparison-card">
+        <div class="card-header">
+          <h3>📄 SSR Template</h3>
+          <span class="card-badge ssr">Server + Client</span>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="file-name">ssr-demo.component.html</span>
+            <span class="language">HTML</span>
+          </div>
+          <pre class="code-content"><code>&lt;<span class="html-tag">div</span> <span class="html-attribute">class</span>=<span class="html-string">"animations-grid"</span>&gt;
+  &#64;for (animation of animationStates(); track animation.id) &#123;
+    &lt;<span class="html-tag">div</span> <span class="html-attribute">class</span>=<span class="html-string">"animation-card"</span> 
+         [<span class="html-attribute">class</span>]=<span class="html-string">"'animation-' + animation.id + (animation.isActive ? ' active' : '')"</span>&gt;
+      &lt;<span class="html-tag">div</span> <span class="html-attribute">class</span>=<span class="html-string">"animation-content"</span>&gt;
+        &lt;<span class="html-tag">h3</span>&gt;[animation title]&lt;/<span class="html-tag">h3</span>&gt;
+        &lt;<span class="html-tag">p</span>&gt;Duration: [animation duration]ms&lt;/<span class="html-tag">p</span>&gt;
+      &lt;/<span class="html-tag">div</span>&gt;
+    &lt;/<span class="html-tag">div</span>&gt;
+  &#125;
+&lt;/<span class="html-tag">div</span>&gt;</code></pre>
+        </div>
+        <div class="code-explanation">
+          <h4>Behavior:</h4>
+          <ul>
+            <li>Content rendered on server</li>
+            <li>Complete HTML sent to browser</li>
+            <li>SEO-friendly from the start</li>
+            <li>Progressive enhancement</li>
+          </ul>
+        </div>
+      </div>
+         </div>
+
+     <!-- Server Setup Comparison -->
+     <div class="comparison-grid">
+       <div class="comparison-card">
+         <div class="card-header">
+           <h3>🖥️ CSR Server Setup</h3>
+           <span class="card-badge csr">Simple Static</span>
+         </div>
+         <div class="code-block">
+           <div class="code-header">
+             <span class="file-name">nginx.conf</span>
+             <span class="language">Config</span>
+           </div>
+           <pre class="code-content"><code><span class="css-selector">server</span> &#123;
+   <span class="css-property">listen</span> <span class="css-value">80</span>;
+   <span class="css-property">server_name</span> <span class="css-value">example.com</span>;
+   
+   <span class="css-selector">location /</span> &#123;
+     <span class="css-property">try_files</span> <span class="css-value">$uri $uri/ /index.html</span>;
+   &#125;
+   
+   <span class="comment"># Serve static files</span>
+   <span class="css-selector">location ~* \.(js|css|png|jpg)$</span> &#123;
+     <span class="css-property">expires</span> <span class="css-value">1y</span>;
+     <span class="css-property">add_header</span> <span class="css-value">Cache-Control "public, immutable"</span>;
+   &#125;
+ &#125;</code></pre>
+         </div>
+         <div class="code-explanation">
+           <h4>Characteristics:</h4>
+           <ul>
+             <li>Simple static file serving</li>
+             <li>No server-side processing</li>
+             <li>Falls back to index.html for all routes</li>
+             <li>Basic caching for static assets</li>
+           </ul>
+         </div>
+       </div>
+
+       <div class="comparison-card">
+         <div class="card-header">
+           <h3>🚀 SSR Server Setup</h3>
+           <span class="card-badge ssr">Dynamic Rendering</span>
+         </div>
+         <div class="code-block">
+           <div class="code-header">
+             <span class="file-name">server.ts</span>
+             <span class="language">TypeScript</span>
+           </div>
+           <pre class="code-content"><code><span class="keyword">import</span> &#123; <span class="class">AngularNodeAppEngine</span> &#125; <span class="keyword">from</span> <span class="string">'@angular/ssr/node'</span>;
+<span class="keyword">import</span> <span class="variable">express</span> <span class="keyword">from</span> <span class="string">'express'</span>;
+
+<span class="keyword">const</span> <span class="variable">app</span> = <span class="function">express</span>();
+<span class="keyword">const</span> <span class="variable">angularApp</span> = <span class="keyword">new</span> <span class="class">AngularNodeAppEngine</span>();
+
+<span class="comment">// Static files</span>
+<span class="variable">app</span>.<span class="function">use</span>(<span class="function">express</span>.<span class="function">static</span>(<span class="variable">browserDistFolder</span>, &#123;
+   <span class="property">maxAge</span>: <span class="string">'1y'</span>,
+   <span class="property">index</span>: <span class="keyword">false</span>
+&#125;));
+
+<span class="comment">// SSR for all routes</span>
+<span class="variable">app</span>.<span class="function">use</span>((<span class="variable">req</span>, <span class="variable">res</span>, <span class="variable">next</span>) => &#123;
+   <span class="variable">angularApp</span>.<span class="function">handle</span>(<span class="variable">req</span>)
+     .<span class="function">then</span>((<span class="variable">response</span>) => &#123;
+       <span class="variable">response</span> ? <span class="function">writeResponseToNodeResponse</span>(<span class="variable">response</span>, <span class="variable">res</span>) : <span class="function">next</span>();
+     &#125;)
+     .<span class="function">catch</span>(<span class="function">next</span>);
+&#125;);</code></pre>
+         </div>
+         <div class="code-explanation">
+           <h4>Characteristics:</h4>
+           <ul>
+             <li>Dynamic server-side rendering</li>
+             <li>Angular SSR engine integration</li>
+             <li>Intelligent static file serving</li>
+             <li>Request-based HTML generation</li>
+           </ul>
+         </div>
+       </div>
+     </div>
+
+     <!-- Routing Comparison -->
+     <div class="comparison-grid">
+       <div class="comparison-card">
+         <div class="card-header">
+           <h3>🛤️ CSR Routing</h3>
+           <span class="card-badge csr">Client Only</span>
+         </div>
+         <div class="code-block">
+           <div class="code-header">
+             <span class="file-name">app.routes.ts</span>
+             <span class="language">TypeScript</span>
+           </div>
+           <pre class="code-content"><code><span class="keyword">export</span> <span class="keyword">const</span> <span class="variable">routes</span>: <span class="type">Routes</span> = [
+   &#123; <span class="property">path</span>: <span class="string">''</span>, <span class="property">component</span>: <span class="class">HomeComponent</span> &#125;,
+   &#123; <span class="property">path</span>: <span class="string">'products'</span>, <span class="property">component</span>: <span class="class">ProductsComponent</span> &#125;,
+   &#123; <span class="property">path</span>: <span class="string">'about'</span>, <span class="property">component</span>: <span class="class">AboutComponent</span> &#125;,
+   &#123; <span class="property">path</span>: <span class="string">'contact'</span>, <span class="property">component</span>: <span class="class">ContactComponent</span> &#125;,
+   &#123; <span class="property">path</span>: <span class="string">'ssr-demo'</span>, <span class="property">component</span>: <span class="class">SsrDemoComponent</span> &#125;,
+   &#123; <span class="property">path</span>: <span class="string">'**'</span>, <span class="property">redirectTo</span>: <span class="string">''</span> &#125;
+];</code></pre>
+         </div>
+         <div class="code-explanation">
+           <h4>Features:</h4>
+           <ul>
+             <li>Client-side navigation only</li>
+             <li>No server-side route handling</li>
+             <li>Single routes file</li>
+             <li>Browser-only execution</li>
+           </ul>
+         </div>
+       </div>
+
+       <div class="comparison-card">
+         <div class="card-header">
+           <h3>🛤️ SSR Routing</h3>
+           <span class="card-badge ssr">Server + Client</span>
+         </div>
+         <div class="code-block">
+           <div class="code-header">
+             <span class="file-name">app.routes.server.ts</span>
+             <span class="language">TypeScript</span>
+           </div>
+           <pre class="code-content"><code><span class="keyword">import</span> &#123; <span class="class">RenderMode</span>, <span class="class">ServerRoute</span> &#125; <span class="keyword">from</span> <span class="string">'@angular/ssr'</span>;
+
+<span class="keyword">export</span> <span class="keyword">const</span> <span class="variable">serverRoutes</span>: <span class="type">ServerRoute</span>[] = [
+   &#123;
+     <span class="property">path</span>: <span class="string">'**'</span>,
+     <span class="property">renderMode</span>: <span class="class">RenderMode</span>.<span class="property">Prerender</span>,
+     <span class="comment">// Can be Prerender, Server, or Client</span>
+   &#125;
+];
+
+<span class="comment">// Plus the same client routes for navigation</span></code></pre>
+         </div>
+         <div class="code-explanation">
+           <h4>Features:</h4>
+           <ul>
+             <li>Server + client routing</li>
+             <li>Prerender/Server/Client modes</li>
+             <li>Dual routing configuration</li>
+             <li>Universal execution</li>
+           </ul>
+         </div>
+       </div>
+     </div>
+
+     <!-- Data Fetching & Resolvers -->
+     <div class="comparison-grid">
+       <div class="comparison-card">
+         <div class="card-header">
+           <h3>📊 CSR Data Fetching</h3>
+           <span class="card-badge csr">Client API Calls</span>
+         </div>
+         <div class="code-block">
+           <div class="code-header">
+             <span class="file-name">products.service.ts</span>
+             <span class="language">TypeScript</span>
+           </div>
+           <pre class="code-content"><code><span class="decorator">@Injectable</span>()
+<span class="keyword">export</span> <span class="keyword">class</span> <span class="class">ProductsService</span> &#123;
+   <span class="function">constructor</span>(<span class="keyword">private</span> <span class="variable">http</span>: <span class="class">HttpClient</span>) &#123;&#125;
+   
+   <span class="function">getProducts</span>(): <span class="type">Observable</span>&lt;<span class="type">Product</span>[]&gt; &#123;
+     <span class="keyword">return</span> <span class="keyword">this</span>.<span class="property">http</span>.<span class="function">get</span>&lt;<span class="type">Product</span>[]&gt;(<span class="string">'/api/products'</span>);
+   &#125;
+&#125;
+
+<span class="comment">// In component</span>
+<span class="function">ngOnInit</span>() &#123;
+   <span class="keyword">this</span>.<span class="property">productsService</span>.<span class="function">getProducts</span>()
+     .<span class="function">subscribe</span>(<span class="variable">products</span> => <span class="keyword">this</span>.<span class="property">products</span> = <span class="variable">products</span>);
+&#125;</code></pre>
+         </div>
+         <div class="code-explanation">
+           <h4>Flow:</h4>
+           <ul>
+             <li>Component loads with empty data</li>
+             <li>HTTP request made after component init</li>
+             <li>Loading state shown to user</li>
+             <li>Data populated after API response</li>
+           </ul>
+         </div>
     </div>
     
-    <div class="team-grid">
-      <div class="team-card">
-        <div class="member-avatar">👨‍💻</div>
-        <h3>Alex Chen</h3>
-        <span class="member-role">Lead Developer</span>
-        <p>Full-stack developer with 8+ years of experience in Angular and modern web technologies.</p>
-        <div class="member-skills">
-          <span class="skill-tag">Angular</span>
-          <span class="skill-tag">TypeScript</span>
-          <span class="skill-tag">Node.js</span>
+       <div class="comparison-card">
+         <div class="card-header">
+           <h3>📊 SSR Data Fetching</h3>
+           <span class="card-badge ssr">Route Resolvers</span>
+         </div>
+         <div class="code-block">
+           <div class="code-header">
+             <span class="file-name">products.resolver.ts</span>
+             <span class="language">TypeScript</span>
+           </div>
+           <pre class="code-content"><code><span class="keyword">export</span> <span class="keyword">const</span> <span class="variable">productsResolver</span>: <span class="type">ResolveFn</span>&lt;<span class="type">Product</span>[]&gt; = 
+   (<span class="variable">route</span>, <span class="variable">state</span>) => &#123;
+     <span class="keyword">const</span> <span class="variable">http</span> = <span class="function">inject</span>(<span class="class">HttpClient</span>);
+     <span class="keyword">return</span> <span class="variable">http</span>.<span class="function">get</span>&lt;<span class="type">Product</span>[]&gt;(<span class="string">'/api/products'</span>);
+   &#125;;
+
+<span class="comment">// In routes</span>
+&#123; 
+   <span class="property">path</span>: <span class="string">'products'</span>, 
+   <span class="property">component</span>: <span class="class">ProductsComponent</span>,
+   <span class="property">resolve</span>: &#123; <span class="property">products</span>: <span class="variable">productsResolver</span> &#125;
+&#125;
+
+<span class="comment">// In component</span>
+<span class="function">ngOnInit</span>() &#123;
+   <span class="keyword">this</span>.<span class="property">products</span> = <span class="keyword">this</span>.<span class="property">route</span>.<span class="property">snapshot</span>.<span class="property">data</span>[<span class="string">'products'</span>];
+&#125;</code></pre>
+         </div>
+         <div class="code-explanation">
+           <h4>Flow:</h4>
+           <ul>
+             <li>Data fetched before component renders</li>
+             <li>Server waits for data resolution</li>
+             <li>Complete HTML sent with data</li>
+             <li>No loading states needed</li>
+           </ul>
+         </div>
         </div>
       </div>
       
-      <div class="team-card">
-        <div class="member-avatar">👩‍🎨</div>
-        <h3>Sarah Kim</h3>
-        <span class="member-role">UX Designer</span>
-        <p>Creative designer focused on creating intuitive and beautiful user experiences.</p>
-        <div class="member-skills">
-          <span class="skill-tag">UI/UX</span>
-          <span class="skill-tag">Figma</span>
-          <span class="skill-tag">Prototyping</span>
+    <!-- Rendering Modes Comparison -->
+    <div class="rendering-modes-section">
+      <div class="section-header">
+        <h2>SSR Rendering Modes</h2>
+        <p>Different strategies for when and how content is rendered</p>
+      </div>
+
+      <div class="modes-grid">
+        <div class="mode-card">
+          <div class="card-header">
+            <h3>🏗️ Prerender</h3>
+            <span class="card-badge" style="background: rgba(59, 130, 246, 0.2); color: #93c5fd;">Build Time</span>
+          </div>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="file-name">app.routes.server.ts</span>
+              <span class="language">TypeScript</span>
+            </div>
+            <pre class="code-content"><code>&#123;
+   <span class="property">path</span>: <span class="string">'/about'</span>,
+   <span class="property">renderMode</span>: <span class="class">RenderMode</span>.<span class="property">Prerender</span>
+&#125;</code></pre>
+          </div>
+          <div class="mode-explanation">
+            <h4>When to use:</h4>
+            <ul>
+              <li>Static content that rarely changes</li>
+              <li>Marketing pages, about pages</li>
+              <li>Blog posts, documentation</li>
+              <li>Maximum performance needed</li>
+            </ul>
+            <h4>Benefits:</h4>
+            <ul>
+              <li>Fastest possible load times</li>
+              <li>Perfect for CDN caching</li>
+              <li>No server processing needed</li>
+              <li>Great SEO performance</li>
+            </ul>
         </div>
       </div>
       
-      <div class="team-card">
-        <div class="member-avatar">👨‍🔬</div>
-        <h3>David Rodriguez</h3>
-        <span class="member-role">AI Engineer</span>
-        <p>Machine learning specialist working on AI-powered development assistance tools.</p>
-        <div class="member-skills">
-          <span class="skill-tag">Machine Learning</span>
-          <span class="skill-tag">Python</span>
-          <span class="skill-tag">TensorFlow</span>
+        <div class="mode-card">
+          <div class="card-header">
+            <h3>⚡ Server</h3>
+            <span class="card-badge" style="background: rgba(245, 158, 11, 0.2); color: #fcd34d;">Request Time</span>
+          </div>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="file-name">app.routes.server.ts</span>
+              <span class="language">TypeScript</span>
+            </div>
+            <pre class="code-content"><code>&#123;
+   <span class="property">path</span>: <span class="string">'/products'</span>,
+   <span class="property">renderMode</span>: <span class="class">RenderMode</span>.<span class="property">Server</span>
+&#125;</code></pre>
+          </div>
+          <div class="mode-explanation">
+            <h4>When to use:</h4>
+            <ul>
+              <li>Dynamic content that changes frequently</li>
+              <li>User-specific content</li>
+              <li>Real-time data requirements</li>
+              <li>Personalized experiences</li>
+            </ul>
+            <h4>Benefits:</h4>
+            <ul>
+              <li>Always up-to-date content</li>
+              <li>Personalization support</li>
+              <li>SEO with dynamic data</li>
+              <li>Server-side data access</li>
+            </ul>
         </div>
       </div>
       
-      <div class="team-card">
-        <div class="member-avatar">👩‍💼</div>
-        <h3>Emily Watson</h3>
-        <span class="member-role">Product Manager</span>
-        <p>Product strategist focused on delivering value to developers and teams.</p>
-        <div class="member-skills">
-          <span class="skill-tag">Product Strategy</span>
-          <span class="skill-tag">Agile</span>
-          <span class="skill-tag">Analytics</span>
+        <div class="mode-card">
+          <div class="card-header">
+            <h3>🖥️ Client</h3>
+            <span class="card-badge csr">Browser Only</span>
+          </div>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="file-name">app.routes.server.ts</span>
+              <span class="language">TypeScript</span>
+            </div>
+            <pre class="code-content"><code>&#123;
+   <span class="property">path</span>: <span class="string">'/dashboard'</span>,
+   <span class="property">renderMode</span>: <span class="class">RenderMode</span>.<span class="property">Client</span>
+&#125;</code></pre>
+          </div>
+          <div class="mode-explanation">
+            <h4>When to use:</h4>
+            <ul>
+              <li>Highly interactive applications</li>
+              <li>Admin dashboards</li>
+              <li>Real-time applications</li>
+              <li>Heavy client-side logic</li>
+            </ul>
+            <h4>Benefits:</h4>
+            <ul>
+              <li>Rich interactivity</li>
+              <li>Offline capabilities</li>
+              <li>Reduced server load</li>
+              <li>Fast subsequent navigation</li>
+            </ul>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Technology Stack -->
-  <div class="tech-section">
+    <!-- Build Output Comparison -->
+    <div class="build-section">
     <div class="section-header">
-      <h2>Technology Stack</h2>
-      <p>Built with cutting-edge technologies for optimal performance and developer experience</p>
+        <h2>Build Output Differences</h2>
+        <p>How CSR and SSR applications are built and deployed</p>
+      </div>
+
+      <div class="comparison-grid">
+        <div class="comparison-card">
+          <div class="card-header">
+            <h3>📦 CSR Build Output</h3>
+            <span class="card-badge csr">Static Files</span>
+          </div>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="file-name">dist/ structure</span>
+              <span class="language">Files</span>
+            </div>
+            <pre class="code-content"><code>dist/
+├── index.html          # Entry point
+├── main-[hash].js      # App bundle
+├── polyfills-[hash].js # Browser polyfills
+├── styles-[hash].css   # Styles
+└── assets/             # Static assets</code></pre>
+          </div>
+          <div class="code-explanation">
+            <h4>Deployment:</h4>
+            <ul>
+              <li>Static hosting (Netlify, Vercel)</li>
+              <li>CDN distribution</li>
+              <li>Simple file serving</li>
+              <li>No server requirements</li>
+            </ul>
+          </div>
     </div>
     
-    <div class="tech-grid">
-      <div class="tech-category">
-        <h3>Frontend</h3>
-        <div class="tech-items">
-          <div class="tech-item">
-            <span class="tech-icon">⚡</span>
-            <span class="tech-name">Angular 20+</span>
+        <div class="comparison-card">
+          <div class="card-header">
+            <h3>📦 SSR Build Output</h3>
+            <span class="card-badge ssr">Server + Client</span>
           </div>
-          <div class="tech-item">
-            <span class="tech-icon">🎨</span>
-            <span class="tech-name">SCSS</span>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="file-name">dist/ structure</span>
+              <span class="language">Files</span>
+            </div>
+            <pre class="code-content"><code>dist/
+├── browser/            # Client files
+│   ├── index.html
+│   ├── main-[hash].js
+│   └── styles-[hash].css
+├── server/             # Server files
+│   ├── main.server.mjs
+│   ├── server.mjs
+│   └── polyfills.server.mjs
+└── prerendered/        # Static pages</code></pre>
           </div>
-          <div class="tech-item">
-            <span class="tech-icon">📦</span>
-            <span class="tech-name">TypeScript</span>
+          <div class="code-explanation">
+            <h4>Deployment:</h4>
+            <ul>
+              <li>Node.js server required</li>
+              <li>Dynamic server hosting</li>
+              <li>Server + static file serving</li>
+              <li>More complex deployment</li>
+            </ul>
           </div>
-        </div>
-      </div>
-      
-      <div class="tech-category">
-        <h3>Backend</h3>
-        <div class="tech-items">
-          <div class="tech-item">
-            <span class="tech-icon">🚀</span>
-            <span class="tech-name">Node.js</span>
           </div>
-          <div class="tech-item">
-            <span class="tech-icon">⚙️</span>
-            <span class="tech-name">Express.js</span>
-          </div>
-          <div class="tech-item">
-            <span class="tech-icon">🔧</span>
-            <span class="tech-name">Angular Universal</span>
           </div>
         </div>
       </div>
       
-      <div class="tech-category">
-        <h3>AI & Tools</h3>
-        <div class="tech-items">
-          <div class="tech-item">
-            <span class="tech-icon">🤖</span>
-            <span class="tech-name">Gemini AI</span>
+  <!-- Performance Comparison -->
+  <div class="performance-section">
+    <div class="section-header">
+      <h2>Performance Comparison</h2>
+      <p>Real-world performance metrics and user experience differences</p>
+    </div>
+
+    <div class="performance-grid">
+      <div class="performance-card">
+        <div class="card-header">
+          <h3>⚡ CSR Performance</h3>
+          <span class="card-badge csr">Client-Side</span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+            <span class="metric-label">Initial Load</span>
+            <span class="metric-value">0ms (blank)</span>
+            <span class="metric-description">Empty HTML sent</span>
           </div>
-          <div class="tech-item">
-            <span class="tech-icon">🔍</span>
-            <span class="tech-name">VS Code</span>
+          <div class="metric">
+            <span class="metric-label">Content Visible</span>
+            <span class="metric-value">2000ms+</span>
+            <span class="metric-description">After JavaScript loads</span>
           </div>
-          <div class="tech-item">
-            <span class="tech-icon">📊</span>
-            <span class="tech-name">Analytics</span>
+          <div class="metric">
+            <span class="metric-label">SEO Score</span>
+            <span class="metric-value">Poor</span>
+            <span class="metric-description">No content for crawlers</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Core Web Vitals</span>
+            <span class="metric-value">Low</span>
+            <span class="metric-description">Poor LCP and FID</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="performance-card">
+        <div class="card-header">
+          <h3>🚀 SSR Performance</h3>
+          <span class="card-badge ssr">Server + Client</span>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+            <span class="metric-label">Initial Load</span>
+            <span class="metric-value">309ms</span>
+            <span class="metric-description">Complete HTML sent</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Content Visible</span>
+            <span class="metric-value">309ms</span>
+            <span class="metric-description">Immediately visible</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">SEO Score</span>
+            <span class="metric-value">Excellent</span>
+            <span class="metric-description">Full content for crawlers</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Core Web Vitals</span>
+            <span class="metric-value">High</span>
+            <span class="metric-description">Good LCP and FID</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Values Section -->
-  <div class="values-section">
+  <!-- Use Cases Section -->
+  <div class="usecases-section">
     <div class="section-header">
-      <h2>Our Values</h2>
-      <p>The principles that guide our development and decision-making process</p>
+      <h2>When to Use Each Approach</h2>
+      <p>Choosing the right rendering strategy for your project</p>
     </div>
     
-    <div class="values-grid">
-      <div class="value-card">
-        <div class="value-icon">🚀</div>
-        <h3>Performance First</h3>
-        <p>We prioritize speed and efficiency in everything we build, ensuring optimal user experience.</p>
+    <div class="usecases-grid">
+      <div class="usecase-card">
+        <div class="card-header">
+          <h3>✅ Use CSR When:</h3>
+          <span class="card-badge csr">Client-Side</span>
+        </div>
+        <ul class="usecase-list">
+          <li>Building internal dashboards</li>
+          <li>Single-page applications (SPAs)</li>
+          <li>Real-time applications</li>
+          <li>Admin panels</li>
+          <li>Applications with heavy client-side logic</li>
+          <li>When SEO is not a priority</li>
+          <li>Progressive web apps (PWAs)</li>
+        </ul>
       </div>
       
-      <div class="value-card">
-        <div class="value-icon">🔧</div>
-        <h3>Developer Experience</h3>
-        <p>Creating tools that developers love to use, with intuitive interfaces and powerful features.</p>
+      <div class="usecase-card">
+        <div class="card-header">
+          <h3>✅ Use SSR When:</h3>
+          <span class="card-badge ssr">Server + Client</span>
+        </div>
+        <ul class="usecase-list">
+          <li>E-commerce websites</li>
+          <li>Content-heavy websites</li>
+          <li>Blogs and news sites</li>
+          <li>Marketing websites</li>
+          <li>SEO-critical applications</li>
+          <li>Social media platforms</li>
+          <li>Public-facing applications</li>
+        </ul>
+      </div>
+    </div>
       </div>
       
-      <div class="value-card">
-        <div class="value-icon">🌐</div>
-        <h3>Accessibility</h3>
-        <p>Building inclusive applications that work for everyone, regardless of abilities or devices.</p>
+  <!-- Benefits Comparison -->
+  <div class="benefits-section">
+    <div class="section-header">
+      <h2>Benefits & Trade-offs</h2>
+      <p>Understanding the advantages and limitations of each approach</p>
       </div>
       
-      <div class="value-card">
-        <div class="value-icon">🔒</div>
-        <h3>Security</h3>
-        <p>Implementing best practices to ensure data protection and application security.</p>
+    <div class="benefits-grid">
+      <div class="benefits-card">
+        <div class="card-header">
+          <h3>🎯 CSR Benefits</h3>
+        </div>
+        <div class="benefits-list">
+          <div class="benefit-item positive">
+            <span class="benefit-icon">✅</span>
+            <span class="benefit-text">Faster subsequent page loads</span>
+          </div>
+          <div class="benefit-item positive">
+            <span class="benefit-icon">✅</span>
+            <span class="benefit-text">Rich client-side interactions</span>
+          </div>
+          <div class="benefit-item positive">
+            <span class="benefit-icon">✅</span>
+            <span class="benefit-text">Offline functionality</span>
+          </div>
+          <div class="benefit-item positive">
+            <span class="benefit-icon">✅</span>
+            <span class="benefit-text">Reduced server load</span>
+          </div>
+        </div>
+        <div class="tradeoffs">
+          <h4>Trade-offs:</h4>
+          <div class="benefit-item negative">
+            <span class="benefit-icon">❌</span>
+            <span class="benefit-text">Poor SEO performance</span>
       </div>
-      
-      <div class="value-card">
-        <div class="value-icon">🤝</div>
-        <h3>Collaboration</h3>
-        <p>Fostering teamwork and knowledge sharing within our community and team.</p>
+          <div class="benefit-item negative">
+            <span class="benefit-icon">❌</span>
+            <span class="benefit-text">Slow initial page load</span>
       </div>
-      
-      <div class="value-card">
-        <div class="value-icon">📈</div>
-        <h3>Innovation</h3>
-        <p>Continuously exploring new technologies and approaches to solve complex problems.</p>
+          <div class="benefit-item negative">
+            <span class="benefit-icon">❌</span>
+            <span class="benefit-text">Empty initial HTML</span>
       </div>
     </div>
   </div>
 
-  <!-- Contact CTA -->
-  <div class="contact-cta">
-    <div class="cta-content">
-      <h2>Ready to get started?</h2>
-      <p>Join thousands of developers building the future of web applications</p>
-      <div class="cta-actions">
-        <button class="btn-primary">Start Building</button>
-        <button class="btn-secondary">Contact Us</button>
+      <div class="benefits-card">
+        <div class="card-header">
+          <h3>🚀 SSR Benefits</h3>
+        </div>
+        <div class="benefits-list">
+          <div class="benefit-item positive">
+            <span class="benefit-icon">✅</span>
+            <span class="benefit-text">Excellent SEO performance</span>
+          </div>
+          <div class="benefit-item positive">
+            <span class="benefit-icon">✅</span>
+            <span class="benefit-text">Fast initial page load</span>
+          </div>
+          <div class="benefit-item positive">
+            <span class="benefit-icon">✅</span>
+            <span class="benefit-text">Complete initial HTML</span>
+          </div>
+          <div class="benefit-item positive">
+            <span class="benefit-icon">✅</span>
+            <span class="benefit-text">Better Core Web Vitals</span>
+          </div>
+        </div>
+        <div class="tradeoffs">
+          <h4>Trade-offs:</h4>
+          <div class="benefit-item negative">
+            <span class="benefit-icon">❌</span>
+            <span class="benefit-text">Increased server load</span>
+          </div>
+          <div class="benefit-item negative">
+            <span class="benefit-icon">❌</span>
+            <span class="benefit-text">More complex setup</span>
+          </div>
+          <div class="benefit-item negative">
+            <span class="benefit-icon">❌</span>
+            <span class="benefit-text">Higher hosting costs</span>
+          </div>
       </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conclusion Section -->
+  <div class="conclusion-section">
+    <div class="section-content">
+      <h2>Modern Approach: Hybrid SSR</h2>
+      <p>
+        The best approach is often a hybrid solution that combines the benefits of both CSR and SSR. 
+        Your Angular SSR application demonstrates this perfectly:
+      </p>
+      <div class="hybrid-features">
+        <div class="feature">
+          <span class="feature-icon">🎯</span>
+          <span class="feature-text">Server renders initial content for SEO</span>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">⚡</span>
+          <span class="feature-text">Client hydrates for interactivity</span>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">🔄</span>
+          <span class="feature-text">Progressive enhancement</span>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">📱</span>
+          <span class="feature-text">Works without JavaScript</span>
+        </div>
+      </div>
+      <p class="conclusion-text">
+        This approach gives you the best of both worlds: fast initial loads with SEO benefits, 
+        plus rich client-side interactions for a great user experience.
+      </p>
     </div>
   </div>
 </div>

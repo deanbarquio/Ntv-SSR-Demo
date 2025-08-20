@@ -61,35 +61,18 @@
           </div>
         </div>
         <div class="panel-content">
-          <div class="code-preview">
-            <div class="code-line">
-              <span class="line-number">1</span>
-              <span class="code-text">// Server-Side Rendering</span>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="file-name">ssr-hydration.ts</span>
+              <span class="language">TypeScript</span>
             </div>
-            <div class="code-line">
-              <span class="line-number">2</span>
-              <span class="code-text">const html = renderToString(app);</span>
-            </div>
-            <div class="code-line">
-              <span class="line-number">3</span>
-              <span class="code-text">// Send pre-rendered HTML</span>
-            </div>
-            <div class="code-line">
-              <span class="line-number">4</span>
-              <span class="code-text">res.send(html);</span>
-            </div>
-            <div class="code-line">
-              <span class="line-number">5</span>
-              <span class="code-text"></span>
-            </div>
-            <div class="code-line">
-              <span class="line-number">6</span>
-              <span class="code-text">// Client-Side Hydration</span>
-            </div>
-            <div class="code-line">
-              <span class="line-number">7</span>
-              <span class="code-text">bootstrapApplication(app);</span>
-            </div>
+            <pre class="code-content"><code><span class="comment">// Server-Side Rendering</span>
+<span class="keyword">const</span> <span class="variable">html</span> = <span class="function">renderToString</span>(<span class="variable">app</span>);
+<span class="comment">// Send pre-rendered HTML</span>
+<span class="variable">res</span>.<span class="function">send</span>(<span class="variable">html</span>);
+
+<span class="comment">// Client-Side Hydration</span>
+<span class="function">bootstrapApplication</span>(<span class="variable">app</span>);</code></pre>
           </div>
         </div>
       </div>

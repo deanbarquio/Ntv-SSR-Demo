@@ -70,4 +70,15 @@ export class AboutComponent {
       benefits: ['Better Performance', 'Simpler Code', 'Enhanced Developer Experience']
     }
   ]);
+
+  // Mock data for code examples (not used in actual functionality)
+  protected readonly products = signal([
+    { name: 'Product 1', description: 'Description 1' },
+    { name: 'Product 2', description: 'Description 2' }
+  ]);
+
+  protected readonly animationStates = signal([
+    { id: 'fade-in', isActive: true, duration: 800 },
+    { id: 'slide-up', isActive: true, duration: 600 }
+  ]);
 }
